@@ -14,7 +14,7 @@ deploy: # Deploy the project artefact to the target environment @Pipeline
 clean:: # Clean-up project resources (main) @Operations
 	# TODO: Implement project resources clean-up step
 
-config: config_asdf config_precommit # Configure development environment (main) @Configuration
+config: config_asdf config_precommit config_poetry # Configure development environment (main) @Configuration
 
 test: # Run all tests
 	poetry run pytest
@@ -31,6 +31,7 @@ config_asdf:
 		echo "asdf is not installed; install it from https://github.com/asdf-vm/asdf" \
 		exit 1; \
 	fi
+	asdf plugin add python
 
 config_precommit:
 	if ! command -v pre-commit >/dev/null 2>&1; then \
@@ -39,6 +40,14 @@ config_precommit:
 	fi
 	pre-commit install
 
+config_poetry:
+	if ! command -v poetry >/dev/null 2>&1; then \
+		pip install poetry; \
+	else \
+		echo "poetry already installed"; \
+	fi
+
+
 help: # Print help @Others
 	printf "\nUsage: \033[3m\033[93m[arg1=val1] [arg2=val2] \033[0m\033[0m\033[32mmake\033[0m\033[34m <command>\033[0m\n\n"
 	perl -e '$(HELP_SCRIPT)' $(MAKEFILE_LIST)
@@ -46,6 +55,6 @@ help: # Print help @Others
 .DEFAULT_GOAL := help
 .ONESHELL:
 .PHONY: *
-.SILENT: help
+.SILENT: help config config_precommit config_asdf config_poetry
 MAKEFLAGS := --no-print-directory
 SHELL := /bin/bash
