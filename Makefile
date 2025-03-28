@@ -16,12 +16,17 @@ clean:: # Clean-up project resources (main) @Operations
 
 config: config_asdf config_precommit config_poetry # Configure development environment (main) @Configuration
 
-test: # Run all tests
-	poetry run pytest
 
+test: test-unit test-lint # Run all tests @Testing
 
-test-lint: # Lint files
-	echo "Not configured"
+test-unit: # Run unit tests @Testing
+	DEBUG=1 poetry run pytest
+
+test-lint: # Lint files @Testing
+	# TODO
+
+test-ui: # Run UI tests @Testing
+	# TODO
 
 run:
 	poetry run ./manage.py runserver
