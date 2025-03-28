@@ -36,7 +36,7 @@ clean:: # Remove Docker resources (docker) - optional: docker_dir|dir=[path to t
 _docker: # Docker command wrapper - mandatory: cmd=[command to execute]; optional: dir=[path to the image directory where the Dockerfile is located, relative to the project's top-level directory, default is '.']
 	# 'DOCKER_IMAGE' and 'DOCKER_TITLE' are passed to the functions as environment variables
 	dir=$(realpath $(or ${dir}, infrastructure/images/${DOCKER_IMAGE}))
-	source scripts/docker/docker.lib.sh
+	. scripts/docker/docker.lib.sh
 	docker-${cmd} # 'dir' is accessible by the function as environment variable
 
 # ==============================================================================

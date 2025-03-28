@@ -1,8 +1,8 @@
-name: "CI/CD pull request"
+name: "CI/CD main branch"
 
 on:
-  pull_request:
-    types: [opened, reopened, synchronize]
+  push:
+    branches: [main]
 
 jobs:
   metadata:
@@ -10,7 +10,6 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 1
     outputs:
-      build_datetime_london: ${{ steps.variables.outputs.build_datetime_london }}
       build_datetime: ${{ steps.variables.outputs.build_datetime }}
       build_timestamp: ${{ steps.variables.outputs.build_timestamp }}
       build_epoch: ${{ steps.variables.outputs.build_epoch }}
@@ -18,6 +17,7 @@ jobs:
       python_version: ${{ steps.variables.outputs.python_version }}
       terraform_version: ${{ steps.variables.outputs.terraform_version }}
       version: ${{ steps.variables.outputs.version }}
+      tag: ${{ steps.variables.outputs.tag }}
     steps:
       - name: "Checkout code"
         uses: actions/checkout@v4
@@ -25,14 +25,15 @@ jobs:
         id: variables
         run: |
           datetime=$(date -u +'%Y-%m-%dT%H:%M:%S%z')
-          echo "build_datetime_london=$(TZ=Europe/London date --date=$datetime +'%Y-%m-%dT%H:%M:%S%z')" >> $GITHUB_OUTPUT
           echo "build_datetime=$datetime" >> $GITHUB_OUTPUT
           echo "build_timestamp=$(date --date=$datetime -u +'%Y%m%d%H%M%S')" >> $GITHUB_OUTPUT
           echo "build_epoch=$(date --date=$datetime -u +'%s')" >> $GITHUB_OUTPUT
           echo "nodejs_version=$(grep "^nodejs" .tool-versions | cut -f2 -d' ')" >> $GITHUB_OUTPUT
           echo "python_version=$(grep "^python" .tool-versions | cut -f2 -d' ')" >> $GITHUB_OUTPUT
           echo "terraform_version=$(grep "^terraform" .tool-versions | cut -f2 -d' ')" >> $GITHUB_OUTPUT
-          echo "version=${GITHUB_REF}" >> $GITHUB_OUTPUT
+          echo "version=${GITHUB_REF}"
+
+  # Scan the commit
   commit-stage:
     name: "Commit stage"
     needs: [metadata]
@@ -46,6 +47,8 @@ jobs:
       terraform_version: "${{ needs.metadata.outputs.terraform_version }}"
       version: "${{ needs.metadata.outputs.version }}"
     secrets: inherit
+
+  # Test the integrated code
   test-stage:
     name: "Test stage"
     needs: [metadata]
@@ -59,9 +62,11 @@ jobs:
       terraform_version: "${{ needs.metadata.outputs.terraform_version }}"
       version: "${{ needs.metadata.outputs.version }}"
     secrets: inherit
-  build-stage:
+
+  # Build the final artefact with the integrated code
+  build-stage: # Recommended maximum execution time is 3 minutes
     name: "Build stage"
-    needs: [metadata, test-stage]
+    needs: [metadata, commit-stage, test-stage]
     uses: ./.github/workflows/stage-3-build.yaml
     with:
       build_datetime: "${{ needs.metadata.outputs.build_datetime }}"
@@ -72,6 +77,7 @@ jobs:
       terraform_version: "${{ needs.metadata.outputs.terraform_version }}"
       version: "${{ needs.metadata.outputs.version }}"
     secrets: inherit
+
   acceptance-stage:
     name: "Acceptance stage"
     needs: [metadata, build-stage]
@@ -85,3 +91,5 @@ jobs:
       terraform_version: "${{ needs.metadata.outputs.terraform_version }}"
       version: "${{ needs.metadata.outputs.version }}"
     secrets: inherit
+
+  # TODO: deploy the thing. This most likely will be done using Azure pipelines.
