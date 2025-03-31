@@ -10,23 +10,47 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
+from os import environ
 from pathlib import Path
+
+from dotenv import load_dotenv
+
+
+def boolean_env(key, default=None):
+    value = environ.get(key)
+    return default if value is None else value in ("True", "true", "1")
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# loads the configs from .env in local development
+load_dotenv(BASE_DIR / "config" / ".env")
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-rqrslm6t05zphv(-j(k4*ri$ua8u1d8hg827w!m21+viul_hw&"
+SECRET_KEY = environ.get("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = boolean_env("DEBUG", default=False)
 
-ALLOWED_HOSTS = []
+allowed_hosts = environ.get("ALLOWED_HOSTS")
+ALLOWED_HOSTS = allowed_hosts.split(",") if allowed_hosts else []
 
+allowed_hosts_except_localhost = set(ALLOWED_HOSTS) - {"localhost", "127.0.0.1"}
+
+if allowed_hosts_except_localhost:
+    CSRF_COOKIE_SECURE = True
+    SESSION_COOKIE_SECURE = True
+    SECURE_SSL_REDIRECT = True
+
+# Strict transport security:
+# https://docs.djangoproject.com/en/5.1/ref/middleware/#http-strict-transport-security
+SECURE_HSTS_SECONDS = 60
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+SECURE_HSTS_PRELOAD = False
 
 # Application definition
 
@@ -117,6 +141,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 STATIC_URL = "static/"
+
+STATIC_ROOT = BASE_DIR / "staticfiles"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field

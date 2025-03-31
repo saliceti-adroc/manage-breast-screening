@@ -11,6 +11,8 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'manage_breast_screening.settings')
+os.environ.setdefault(
+    "DJANGO_SETTINGS_MODULE", "manage_breast_screening.config.settings"
+)
 
 application = get_wsgi_application()

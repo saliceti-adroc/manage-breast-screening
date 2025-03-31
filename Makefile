@@ -6,7 +6,7 @@ dependencies: # Install dependencies needed to build and test the project @Pipel
 	poetry install
 
 build: # Build the project artefact @Pipeline
-	# TODO: Implement the artefact build step
+	docker build -t "app:$$(git rev-parse HEAD)" .
 
 deploy: # Deploy the project artefact to the target environment @Pipeline
 	# TODO: Implement the artefact deployment step
@@ -28,7 +28,7 @@ test-lint: # Lint files @Testing
 test-ui: # Run UI tests @Testing
 	# TODO
 
-run:
+run: manage_breast_screening/config/.env # Run the development server @Development
 	poetry run ./manage.py runserver
 
 config_asdf:
@@ -57,9 +57,14 @@ help: # Print help @Others
 	printf "\nUsage: \033[3m\033[93m[arg1=val1] [arg2=val2] \033[0m\033[0m\033[32mmake\033[0m\033[34m <command>\033[0m\n\n"
 	perl -e '$(HELP_SCRIPT)' $(MAKEFILE_LIST)
 
+
+manage_breast_screening/config/.env:
+	cp manage_breast_screening/config/.env.tpl manage_breast_screening/config/.env
+
+
 .DEFAULT_GOAL := help
 .ONESHELL:
-.PHONY: *
+.PHONY: dependencies build deploy clean config test test-unit test-lint test-ui run config_asdf config_poetry config_precommit help
 .SILENT: help config config_precommit config_asdf config_poetry
 MAKEFLAGS := --no-print-directory
 SHELL := /bin/bash

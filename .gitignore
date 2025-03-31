@@ -12,3 +12,7 @@ lines-of-code-report.json
 !project.code-workspace
 
 __pycache__
+
+.env
+*.sqlite3
+staticfiles/
