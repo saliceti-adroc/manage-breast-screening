@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "nhsuk-frontend": "^9.3.0"
+  },
+  "scripts": {
+    "postinstall": "scripts/copy_nhsuk_frontend.sh"
+  }
+}

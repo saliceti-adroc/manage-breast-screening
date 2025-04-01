@@ -14,6 +14,7 @@ from os import environ
 from pathlib import Path
 
 from dotenv import load_dotenv
+from jinja2 import ChainableUndefined
 
 
 def boolean_env(key, default=None):
@@ -46,11 +47,11 @@ if allowed_hosts_except_localhost:
     SESSION_COOKIE_SECURE = True
     SECURE_SSL_REDIRECT = True
 
-# Strict transport security:
-# https://docs.djangoproject.com/en/5.1/ref/middleware/#http-strict-transport-security
-SECURE_HSTS_SECONDS = 60
-SECURE_HSTS_INCLUDE_SUBDOMAINS = True
-SECURE_HSTS_PRELOAD = False
+    # Strict transport security:
+    # https://docs.djangoproject.com/en/5.1/ref/middleware/#http-strict-transport-security
+    SECURE_HSTS_SECONDS = 60
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+    SECURE_HSTS_PRELOAD = False
 
 # Application definition
 
@@ -78,6 +79,15 @@ ROOT_URLCONF = "manage_breast_screening.config.urls"
 
 TEMPLATES = [
     {
+        "BACKEND": "django.template.backends.jinja2.Jinja2",
+        "DIRS": [BASE_DIR / "templates"],
+        "APP_DIRS": True,
+        "OPTIONS": {
+            "environment": "manage_breast_screening.config.jinja2_env.environment",
+            "undefined": ChainableUndefined,
+        },
+    },
+    {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
         "DIRS": [],
         "APP_DIRS": True,
@@ -87,7 +97,7 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
-            ],
+            ]
         },
     },
 ]
@@ -143,6 +153,8 @@ USE_TZ = True
 STATIC_URL = "static/"
 
 STATIC_ROOT = BASE_DIR / "staticfiles"
+
+STATICFILES_DIRS = [BASE_DIR / "static"]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field

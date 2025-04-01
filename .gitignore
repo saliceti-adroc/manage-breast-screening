@@ -11,8 +11,13 @@ lines-of-code-report.json
 *.code-workspace
 !project.code-workspace
 
+# Python
 __pycache__
 
+# Django
 .env
 *.sqlite3
 staticfiles/
+
+# npm
+node_modules/
