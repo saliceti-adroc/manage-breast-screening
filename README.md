@@ -11,6 +11,8 @@ The new service is a system for managing breast screening clinics, including:
 - Tracking participants through their screening journey
 - Managing participant information and status
 
+## Running the app
+
 ## Setup
 
 To install the toolchain dependencies, run
@@ -32,6 +34,8 @@ If dependencies have been installed correctly, you shoul dbe able to run
 ```sh
 poetry install
 poetry run ./manage.py migrate
+poetry run ./manage.py loaddata ex
+ample
 poetry run ./manage.py runserver
 ```
 
@@ -47,6 +51,17 @@ make run
 ```sh
 make test
 ```
+
+### Django admin
+We'll probably remove it before deploying to production, but currently Django admin is enabled.
+
+To use it, first create a superuser
+
+```sh
+poetry run ./manage.py createsuperuser
+```
+
+Then run the app and navigate to `http://localhost:8000/admin`
 
 ## Design
 

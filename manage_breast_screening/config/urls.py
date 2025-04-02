@@ -19,10 +19,14 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path
+from django.views.generic.base import RedirectView
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("", include("manage_breast_screening.clinics.urls", namespace="clinics")),
+    path(
+        "clinics/", include("manage_breast_screening.clinics.urls", namespace="clinics")
+    ),
+    path("", RedirectView.as_view(pattern_name="clinics:index")),
 ]
 
 if settings.DEBUG:

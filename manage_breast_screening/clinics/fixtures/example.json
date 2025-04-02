@@ -1,0 +1,35 @@
+[
+  {
+    "model": "clinics.provider",
+    "pk": 1,
+    "fields": {
+      "created_at": "2025-04-04T09:19:24.083Z",
+      "updated_at": "2025-04-04T09:19:24.083Z",
+      "name": "University Hospitals Sussex"
+    }
+  },
+  {
+    "model": "clinics.setting",
+    "pk": 1,
+    "fields": {
+      "created_at": "2025-04-04T09:19:54.619Z",
+      "updated_at": "2025-04-04T09:19:54.619Z",
+      "name": "West Sussex BSS",
+      "provider": 1
+    }
+  },
+  {
+    "model": "clinics.clinic",
+    "pk": 1,
+    "fields": {
+      "created_at": "2025-04-04T09:20:35.518Z",
+      "updated_at": "2025-04-04T09:20:35.518Z",
+      "setting": 1,
+      "starts_at": "2025-04-01T09:00:00Z",
+      "ends_at": "2025-04-04T17:00:00Z",
+      "type": "SCREENING",
+      "risk_type": "ROUTINE_RISK",
+      "state": "IN_PROGRESS"
+    }
+  }
+]

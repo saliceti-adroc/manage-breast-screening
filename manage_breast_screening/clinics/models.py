@@ -86,8 +86,7 @@ class Clinic(BaseModel):
 
     objects = ClinicQuerySet.as_manager()
 
-    # TODO: this can be programatically calculated
-    def sessionType(self):
+    def session_type(self):
         start_hour = self.starts_at.hour
         duration = (self.ends_at - self.starts_at).seconds
         if duration > 6 * 60 * 60:
