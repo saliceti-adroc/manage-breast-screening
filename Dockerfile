@@ -1,5 +1,21 @@
 ARG poetry_version=2.1.2
 
+#### NODE.JS BUILD
+
+FROM node:23.11.0-alpine3.21@sha256:86703151a18fcd06258e013073508c4afea8e19cd7ed451554221dd00aea83fc AS node_builder
+
+WORKDIR /app
+
+# Install dependencies for npm install command
+RUN apk add --no-cache bash
+
+# Compile static assets
+COPY package.json package-lock.json ./
+COPY manage_breast_screening ./manage_breast_screening
+COPY scripts/copy_nhsuk_frontend.sh ./scripts/
+RUN npm install --omit=dev
+RUN npm run compile:css
+
 FROM python:3.13.2-alpine3.21@sha256:323a717dc4a010fee21e3f1aac738ee10bb485de4e7593ce242b36ee48d6b352 AS python_builder
 ARG poetry_version
 
@@ -43,9 +59,11 @@ ENV VIRTUAL_ENV=/app/.venv \
 
 COPY --from=python_builder --chown=${CONTAINER_USER}:${CONTAINER_GROUP} ${VIRTUAL_ENV} ${VIRTUAL_ENV}
 COPY --chown=${CONTAINER_USER}:${CONTAINER_GROUP} ./manage_breast_screening /app/manage_breast_screening
+COPY --from=node_builder --chown=${CONTAINER_USER}:${CONTAINER_GROUP} /app/manage_breast_screening/assets/compiled /app/manage_breast_screening/assets/compiled
 COPY --chown=${CONTAINER_USER}:${CONTAINER_GROUP} manage.py ./
 
 # Run django commands
+ENV DEBUG=0
 RUN python ./manage.py collectstatic --noinput
 
 EXPOSE 8000
