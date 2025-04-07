@@ -1,7 +1,6 @@
 # Manage breast screening Django spike
 
-[![CI/CD Pull Request](https://github.com/nhs-england-tools/repository-template/actions/workflows/cicd-1-pull-request.yaml/badge.svg)](https://github.com/nhs-england-tools/repository-template/actions/workflows/cicd-1-pull-request.yaml)
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=repository-template&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=repository-template)
+[![Main branch CI](https://github.com/nhsdigital/manage-breast-screening-django-spike/actions/workflows/cicd-1-main-branch.yaml/badge.svg)](https://github.com/nhsdigital/manage-breast-screening-django-spike/actions/workflows/cicd-1-main-branch.yaml)
 
 This repo is a spike to explore using Django as the framework for our new service.
 
@@ -82,6 +81,14 @@ poetry run ./manage.py startapp <app_name> manage_breast_screening/`
 - Make sure you have `pre-commit` running so that pre-commit hooks run automatically when you commit - this should have been set up automatically when you ran `make config`.
 - Consider switching on format-on-save in your editor (e.g. [Black](https://github.com/psf/black) for python)
 - (Internal contributions only) contact the `#screening-manage` team on slack with any questions
+
+### Makefile and Scripts
+`scripts/` contains various scripts that can be used in the CI/CD workflows.
+
+For more information, see the following developer guides:
+
+- [Bash and Make](https://github.com/NHSDigital/repository-template/blob/main/docs/developer-guides/Bash_and_Make.md)
+- [Scripting Docker](https://github.com/NHSDigital/repository-template/blob/main/docs/developer-guides/Scripting_Docker.md)
 
 ## Licence
 Unless stated otherwise, the codebase is released under the MIT License. This covers both the codebase and any sample code in the documentation. See [LICENCE.md](./LICENCE.md).
