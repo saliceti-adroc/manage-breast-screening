@@ -4,7 +4,6 @@
     "sass": "^1.86.2"
   },
   "scripts": {
-    "postinstall": "scripts/copy_nhsuk_frontend.sh",
     "compile:css": "sass --load-path=. manage_breast_screening/assets/sass:manage_breast_screening/assets/compiled/css",
     "compile:css:watch": "sass -o manage_breast_screening/assets/compiled/css manage_breast_screening/assets/sass --watch"
   }
