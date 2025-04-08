@@ -46,13 +46,7 @@ allowed_hosts_except_localhost = set(ALLOWED_HOSTS) - {"localhost", "127.0.0.1"}
 if allowed_hosts_except_localhost:
     CSRF_COOKIE_SECURE = True
     SESSION_COOKIE_SECURE = True
-    SECURE_SSL_REDIRECT = True
-
-    # Strict transport security:
-    # https://docs.djangoproject.com/en/5.1/ref/middleware/#http-strict-transport-security
-    SECURE_HSTS_SECONDS = 60
-    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
-    SECURE_HSTS_PRELOAD = False
+    SECURE_SSL_REDIRECT = False
 
 # Application definition
 
