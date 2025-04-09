@@ -2,6 +2,7 @@
 
 .scannerwork
 *cloc*report*.json
+lines-of-code-report.json
 *sbom*report*.json
 *vulnerabilities*report*.json
 *report*json.zip
@@ -10,4 +11,13 @@
 *.code-workspace
 !project.code-workspace
 
-# Please, add your custom content below!
+# Python
+__pycache__
+
+# Django
+.env
+*.sqlite3
+staticfiles/
+
+# npm
+node_modules/

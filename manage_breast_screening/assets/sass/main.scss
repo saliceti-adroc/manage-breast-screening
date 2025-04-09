@@ -1,0 +1,26 @@
+// Import NHS.UK frontend library
+@import 'node_modules/nhsuk-frontend/packages/nhsuk';
+
+// Components that are not in the NHS.UK frontend library
+@import 'components/count';
+@import 'components/secondary-navigation';
+
+h1 {
+  @extend %nhsuk-heading-l;
+}
+
+h2 {
+  @extend %nhsuk-heading-m;
+}
+
+h3 {
+  @extend %nhsuk-heading-s;
+}
+
+.app-nowrap {
+  white-space: nowrap;
+}
+
+.app-text-grey {
+  color: $nhsuk-secondary-text-color;
+}
