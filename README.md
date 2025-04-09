@@ -33,8 +33,10 @@ If dependencies have been installed correctly, you shoul dbe able to run
 ```sh
 poetry install
 poetry run ./manage.py migrate
-poetry run ./manage.py loaddata ex
-ample
+poetry run ./manage.py loaddata example
+cp manage_breast_screening/config/.env.tpl manage_breast_screening/config/.env
+npm install
+npm run compile:css
 poetry run ./manage.py runserver
 ```
 
