@@ -167,9 +167,10 @@ LOGGING = {
     "disable_existing_loggers": False,  # retain the default loggers
     "formatters": {
         "verbose": {
-            "format": "{levelname} {asctime} {module} {process:d} {thread:d} {message}",
-            "style": "{",
-        },
+            "format": "%(asctime)s [%(process)d] [%(levelname)s] [%(module)s] %(message)s",
+            "datefmt": "[%Y-%m-%d %H:%M:%S %z]",
+            "class": "logging.Formatter",
+        }
     },
     "handlers": {
         "console": {
@@ -185,6 +186,21 @@ LOGGING = {
     "loggers": {
         "django": {
             "level": "DEBUG",
+            "handlers": ["console"],
+            "propagate": False,
+        },
+        "django.db.backends": {
+            "level": "DEBUG" if DEBUG else "INFO",
+            "handlers": ["console"],
+            "propagate": False,
+        },
+        "django.server": {
+            "level": "INFO",
+            "handlers": ["console"],
+            "propagate": False,
+        },
+        "django.utils.autoreload": {
+            "level": "INFO",
             "handlers": ["console"],
             "propagate": False,
         },
