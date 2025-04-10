@@ -14,7 +14,7 @@ The new service is a system for managing breast screening clinics, including:
 
 ## Setup
 
-To install the toolchain dependencies, run
+To install the toolchain dependencies and setup the project, run
 
 ```shell
 make config
@@ -28,30 +28,32 @@ This command assumes you have a few things already installed:
 
 ## Usage
 
-If dependencies have been installed correctly, you shoul dbe able to run
-
 ```sh
-poetry install
-poetry run ./manage.py migrate
-poetry run ./manage.py loaddata example
-cp manage_breast_screening/config/.env.tpl manage_breast_screening/config/.env
-npm install
-npm run compile:css
-poetry run ./manage.py runserver
-```
-
-Alternatively, you can use the `make` shortcuts:
-
-```sh
-make dependencies
 make run
 ```
 
-### Testing
+This will serve the app at http://localhost:8000
+
+## Local development
+
+### Tests
+
+To run all the tests:
 
 ```sh
 make test
 ```
+
+### Dependency management
+Python dependencies are managed via [poetry](https://python-poetry.org/docs/basic-usage/).
+
+- `poetry install` installs dependencies from the lockfile
+- `poetry add` and `poetry remove` adds and removes dependencies
+- `poetry run [COMMAND]` runs a command in the context of the project's virtual environment
+
+`npm` is used to manage javascript dependencies and frontend assets.
+
+You can run `make dependencies` to install anything that's missing after pulling new changes from GitHub.
 
 ### Django admin
 We'll probably remove it before deploying to production, but currently Django admin is enabled.

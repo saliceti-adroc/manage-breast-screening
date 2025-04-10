@@ -1,9 +1,15 @@
 
 
-include scripts/help.mk
+include scripts/shared.mk
+
+clean:: # Clean-up project resources (main) @Operations
+
+config: manage_breast_screening/config/.env _install-dependencies githooks-config _install_poetry _first_time_django_setup  # Configure development environment (main) @Configuration
 
 dependencies: # Install dependencies needed to build and test the project @Pipeline
 	poetry install
+	npm install
+	npm run compile:css
 
 build: # Build the project artefact @Pipeline
 	docker build -t "app:$$(git rev-parse HEAD)" .
@@ -11,11 +17,20 @@ build: # Build the project artefact @Pipeline
 deploy: # Deploy the project artefact to the target environment @Pipeline
 	# TODO: Implement the artefact deployment step
 
-clean:: # Clean-up project resources (main) @Operations
-	# TODO: Implement project resources clean-up step
+githooks-config:
+	if ! command -v pre-commit >/dev/null 2>&1; then \
+		pip install pre-commit; \
+	fi
+	pre-commit install
 
-config: config_asdf config_precommit config_poetry # Configure development environment (main) @Configuration
+githooks-run: # Run git hooks configured in this repository @Operations
+	pre-commit run \
+		--config scripts/config/pre-commit.yaml \
+		--all-files
 
+help: # Print help @Others
+	printf "\nUsage: \033[3m\033[93m[arg1=val1] [arg2=val2] \033[0m\033[0m\033[32mmake\033[0m\033[34m <command>\033[0m\n\n"
+	perl -e '$(HELP_SCRIPT)' $(MAKEFILE_LIST)
 
 test: test-unit test-lint # Run all tests @Testing
 
@@ -31,40 +46,24 @@ test-ui: # Run UI tests @Testing
 run: manage_breast_screening/config/.env # Run the development server @Development
 	poetry run ./manage.py runserver
 
-config_asdf:
-	if ! command -v asdf >/dev/null 2>&1; then \
-		echo "asdf is not installed; install it from https://github.com/asdf-vm/asdf" \
-		exit 1; \
-	fi
-	asdf plugin add python
-
-config_precommit:
-	if ! command -v pre-commit >/dev/null 2>&1; then \
-		echo "pre-commit is not installed; install it from https://pre-commit.com/" \
-		exit 1; \
-	fi
-	pre-commit install
-
-config_poetry:
+_install_poetry:
 	if ! command -v poetry >/dev/null 2>&1; then \
 		pip install poetry; \
 	else \
 		echo "poetry already installed"; \
 	fi
 
-
-help: # Print help @Others
-	printf "\nUsage: \033[3m\033[93m[arg1=val1] [arg2=val2] \033[0m\033[0m\033[32mmake\033[0m\033[34m <command>\033[0m\n\n"
-	perl -e '$(HELP_SCRIPT)' $(MAKEFILE_LIST)
-
+_first_time_django_setup:
+	poetry install
+	poetry run ./manage.py migrate
+	poetry run ./manage.py loaddata example
+	npm install
+	npm run compile:css
 
 manage_breast_screening/config/.env:
 	cp manage_breast_screening/config/.env.tpl manage_breast_screening/config/.env
 
 
 .DEFAULT_GOAL := help
-.ONESHELL:
-.PHONY: dependencies build deploy clean config test test-unit test-lint test-ui run config_asdf config_poetry config_precommit help
-.SILENT: help config config_precommit config_asdf config_poetry
-MAKEFLAGS := --no-print-directory
-SHELL := /bin/bash
+.PHONY: clean config dependencies build deploy githooks-config githooks-run help test test-unit test-lint test-ui run _install_poetry _first_time_django_setup
+.SILENT: help run
