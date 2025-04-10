@@ -13,7 +13,7 @@ package-mode = false
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.3.5"
-pytest-django = "^4.10.0"
+pytest-django = "^4.11.1"
 factory-boy = "^3.3.3"
 time-machine = "^2.16.0"
 
