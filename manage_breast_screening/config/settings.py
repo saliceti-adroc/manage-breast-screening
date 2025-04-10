@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
+import sys
 from os import environ
 from pathlib import Path
 
@@ -45,13 +46,7 @@ allowed_hosts_except_localhost = set(ALLOWED_HOSTS) - {"localhost", "127.0.0.1"}
 if allowed_hosts_except_localhost:
     CSRF_COOKIE_SECURE = True
     SESSION_COOKIE_SECURE = True
-    SECURE_SSL_REDIRECT = True
-
-    # Strict transport security:
-    # https://docs.djangoproject.com/en/5.1/ref/middleware/#http-strict-transport-security
-    SECURE_HSTS_SECONDS = 60
-    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
-    SECURE_HSTS_PRELOAD = False
+    SECURE_SSL_REDIRECT = False
 
 # Application definition
 
@@ -67,6 +62,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -115,6 +111,11 @@ DATABASES = {
     }
 }
 
+STORAGES = {
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
@@ -160,3 +161,32 @@ STATICFILES_DIRS = [BASE_DIR / "static", BASE_DIR / "assets" / "compiled"]
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+LOGGING = {
+    "version": 1,  # the dictConfig format version
+    "disable_existing_loggers": False,  # retain the default loggers
+    "formatters": {
+        "verbose": {
+            "format": "{levelname} {asctime} {module} {process:d} {thread:d} {message}",
+            "style": "{",
+        },
+    },
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
+            "formatter": "verbose",
+            "stream": sys.stdout,
+        },
+    },
+    "root": {
+        "handlers": ["console"],
+        "level": "DEBUG",
+    },
+    "loggers": {
+        "django": {
+            "level": "DEBUG",
+            "handlers": ["console"],
+            "propagate": False,
+        },
+    },
+}
