@@ -370,9 +370,9 @@ jinja2 = ">=3.1.6,<4.0.0"
 
 [package.source]
 type = "git"
-url = "https://github.com/nhsdigital/nhsuk-frontend-jinja"
-reference = "HEAD"
-resolved_reference = "68c97a240d4370bb17350ad844800755657c1467"
+url = "https://github.com/NHSDigital/nhsuk-frontend-jinja.git"
+reference = "0.1.0"
+resolved_reference = "96b89b6173ce0162dfaae529fc3c9f0e45889ba3"
 
 [[package]]
 name = "packaging"
@@ -603,4 +603,4 @@ brotli = ["brotli"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.13"
-content-hash = "ac749495b1d39566be83298595fd931e8a68433f01b5f328d67ec9f55392866c"
+content-hash = "9246e4c3f73febfdb0e29027aea79c2348634b42caa15f909be961e659b03a0d"
