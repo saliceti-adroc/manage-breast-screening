@@ -1,6 +1,6 @@
 from django.templatetags.static import static
 from django.urls import reverse
-from jinja2 import Environment
+from jinja2 import ChoiceLoader, Environment, PackageLoader
 from markupsafe import Markup, escape
 
 
@@ -68,6 +68,9 @@ def format_time_range(value):
 
 def environment(**options):
     env = Environment(**options)
+    if env.loader:
+        env.loader = ChoiceLoader([PackageLoader("nhsuk_frontend_jinja"), env.loader])
+
     env.globals.update(
         {
             "static": static,
