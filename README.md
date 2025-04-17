@@ -1,6 +1,6 @@
 # Manage breast screening Django spike
 
-[![Main branch CI](https://github.com/nhsdigital/manage-breast-screening-django-spike/actions/workflows/cicd-1-main-branch.yaml/badge.svg)](https://github.com/nhsdigital/manage-breast-screening-django-spike/actions/workflows/cicd-1-main-branch.yaml)
+[![Main branch CI](https://github.com/nhsdigital/manage-breast-screening-django-spike/actions/workflows/cicd-2-main-branch.yaml/badge.svg)](https://github.com/nhsdigital/manage-breast-screening-django-spike/actions/workflows/cicd-2-main-branch.yaml)
 
 This repo is a spike to explore using Django as the framework for our new service.
 
