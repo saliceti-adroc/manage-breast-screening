@@ -1,7 +1,7 @@
 {
   "dependencies": {
     "nhsuk-frontend": "^9.3.0",
-    "sass": "^1.86.3"
+    "sass": "^1.87.0"
   },
   "scripts": {
     "compile:css": "sass --load-path=. manage_breast_screening/assets/sass:manage_breast_screening/assets/compiled/css",
