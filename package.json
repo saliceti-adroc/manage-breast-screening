@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "nhsuk-frontend": "^9.3.0",
+    "nhsuk-frontend": "^9.4.1",
     "sass": "^1.87.0"
   },
   "scripts": {
