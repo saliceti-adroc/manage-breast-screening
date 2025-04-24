@@ -109,3 +109,31 @@ class ClinicSlot(BaseModel):
     duration_in_minutes = models.IntegerField()
 
     # TODO: add unique constrants
+
+
+class ScreeningEpisode(BaseModel):
+    participant = models.ForeignKey("participants.Participant", on_delete=models.CASCADE)
+
+
+class Appointment(BaseModel):
+    class Status:
+        CONFIRMED = "CONFIRMED"
+        CANCELLED = "CANCELLED"
+        DID_NOT_ATTEND = "DID_NOT_ATTEND"
+        CHECKED_IN = "CHECKED_IN"
+        SCREENED = "SCREENED"
+        ATTENDED_NOT_SCREEN = "ATTENDED_NOT_SCREEN"
+
+    STATUS_CHOICES = {
+        Status.CONFIRMED: "Confirmed",
+        Status.CANCELLED: "Cancelled",
+        Status.DID_NOT_ATTEND: "Did not attend",
+        Status.CHECKED_IN: "Checked in",
+        Status.SCREENED: "Screened",
+        Status.ATTENDED_NOT_SCREEN: "Attended not screened",
+    }
+
+    screening_episode = models.ForeignKey(ScreeningEpisode, on_delete=models.CASCADE)
+    clinic_slot = models.ForeignKey(ClinicSlot, on_delete=models.CASCADE)
+    status = models.CharField(choices=STATUS_CHOICES, max_length=50, default=Status.CONFIRMED)
+
