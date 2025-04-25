@@ -86,5 +86,50 @@
       "starts_at": "2025-05-01T13:00:00Z",
       "duration_in_minutes": 30
     }
+  },
+  {
+    "model": "clinics.screeningepisode",
+    "pk": 1,
+    "fields": {
+      "created_at": "2025-04-25T11:15:00Z",
+      "updated_at": "2025-04-25T11:15:00Z",
+      "participant": 1
+    }
+  },
+  {
+    "model": "clinics.screeningepisode",
+    "pk": 2,
+    "fields": {
+      "created_at": "2025-04-25T11:15:00Z",
+      "updated_at": "2025-04-25T11:15:00Z",
+      "participant": 2
+    }
+  },
+  {
+    "model": "clinics.screeningepisode",
+    "pk": 3,
+    "fields": {
+      "created_at": "2025-04-25T11:15:00Z",
+      "updated_at": "2025-04-25T11:15:00Z",
+      "participant": 3
+    }
+  },
+  {
+    "model": "clinics.screeningepisode",
+    "pk": 4,
+    "fields": {
+      "created_at": "2025-04-25T11:15:00Z",
+      "updated_at": "2025-04-25T11:15:00Z",
+      "participant": 4
+    }
+  },
+  {
+    "model": "clinics.screeningepisode",
+    "pk": 5,
+    "fields": {
+      "created_at": "2025-04-25T11:15:00Z",
+      "updated_at": "2025-04-25T11:15:00Z",
+      "participant": 5
+    }
   }
 ]
