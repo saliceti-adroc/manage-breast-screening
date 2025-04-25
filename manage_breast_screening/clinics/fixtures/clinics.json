@@ -131,5 +131,60 @@
       "updated_at": "2025-04-25T11:15:00Z",
       "participant": 5
     }
+  },
+  {
+    "model": "clinics.appointment",
+    "pk": 1,
+    "fields": {
+      "created_at": "2025-04-25T11:20:00Z",
+      "updated_at": "2025-04-25T11:20:00Z",
+      "screening_episode": 1,
+      "clinic_slot": 1,
+      "status": "CONFIRMED"
+    }
+  },
+  {
+    "model": "clinics.appointment",
+    "pk": 2,
+    "fields": {
+      "created_at": "2025-04-25T11:20:00Z",
+      "updated_at": "2025-04-25T11:20:00Z",
+      "screening_episode": 2,
+      "clinic_slot": 2,
+      "status": "CHECKED_IN"
+    }
+  },
+  {
+    "model": "clinics.appointment",
+    "pk": 3,
+    "fields": {
+      "created_at": "2025-04-25T11:20:00Z",
+      "updated_at": "2025-04-25T11:20:00Z",
+      "screening_episode": 3,
+      "clinic_slot": 3,
+      "status": "SCREENED"
+    }
+  },
+  {
+    "model": "clinics.appointment",
+    "pk": 4,
+    "fields": {
+      "created_at": "2025-04-25T11:20:00Z",
+      "updated_at": "2025-04-25T11:20:00Z",
+      "screening_episode": 4,
+      "clinic_slot": 4,
+      "status": "DID_NOT_ATTEND"
+    }
+  },
+  {
+    "model": "clinics.appointment",
+    "pk": 5,
+    "fields": {
+      "created_at": "2025-04-25T11:20:00Z",
+      "updated_at": "2025-04-25T11:20:00Z",
+      "screening_episode": 5,
+      "clinic_slot": 5,
+      "status": "CANCELLED"
+    }
   }
 ]
