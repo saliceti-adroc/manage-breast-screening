@@ -31,5 +31,60 @@
       "risk_type": "ROUTINE_RISK",
       "state": "IN_PROGRESS"
     }
+  },
+  {
+    "model": "clinics.clinicslot",
+    "pk": 1,
+    "fields": {
+      "created_at": "2025-04-04T09:20:35.518Z",
+      "updated_at": "2025-04-04T09:20:35.518Z",
+      "clinic": 1,
+      "starts_at": "2025-05-01T09:00:00Z",
+      "duration_in_minutes": 30
+    }
+  },
+  {
+    "model": "clinics.clinicslot",
+    "pk": 2,
+    "fields": {
+      "created_at": "2025-04-04T09:20:35.518Z",
+      "updated_at": "2025-04-04T09:20:35.518Z",
+      "clinic": 1,
+      "starts_at": "2025-05-01T10:00:00Z",
+      "duration_in_minutes": 30
+    }
+  },
+  {
+    "model": "clinics.clinicslot",
+    "pk": 3,
+    "fields": {
+      "created_at": "2025-04-04T09:20:35.518Z",
+      "updated_at": "2025-04-04T09:20:35.518Z",
+      "clinic": 1,
+      "starts_at": "2025-05-01T11:00:00Z",
+      "duration_in_minutes": 30
+    }
+  },
+  {
+    "model": "clinics.clinicslot",
+    "pk": 4,
+    "fields": {
+      "created_at": "2025-04-04T09:20:35.518Z",
+      "updated_at": "2025-04-04T09:20:35.518Z",
+      "clinic": 1,
+      "starts_at": "2025-05-01T12:00:00Z",
+      "duration_in_minutes": 30
+    }
+  },
+  {
+    "model": "clinics.clinicslot",
+    "pk": 5,
+    "fields": {
+      "created_at": "2025-04-04T09:20:35.518Z",
+      "updated_at": "2025-04-04T09:20:35.518Z",
+      "clinic": 1,
+      "starts_at": "2025-05-01T13:00:00Z",
+      "duration_in_minutes": 30
+    }
   }
 ]
