@@ -122,7 +122,7 @@ class Appointment(BaseModel):
         DID_NOT_ATTEND = "DID_NOT_ATTEND"
         CHECKED_IN = "CHECKED_IN"
         SCREENED = "SCREENED"
-        ATTENDED_NOT_SCREEN = "ATTENDED_NOT_SCREEN"
+        ATTENDED_NOT_SCREENED = "ATTENDED_NOT_SCREENED"
 
     STATUS_CHOICES = {
         Status.CONFIRMED: "Confirmed",
@@ -130,7 +130,7 @@ class Appointment(BaseModel):
         Status.DID_NOT_ATTEND: "Did not attend",
         Status.CHECKED_IN: "Checked in",
         Status.SCREENED: "Screened",
-        Status.ATTENDED_NOT_SCREEN: "Attended not screened",
+        Status.ATTENDED_NOT_SCREENED: "Attended not screened",
     }
 
     screening_episode = models.ForeignKey(ScreeningEpisode, on_delete=models.CASCADE)
