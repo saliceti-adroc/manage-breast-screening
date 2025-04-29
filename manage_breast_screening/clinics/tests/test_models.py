@@ -1,4 +1,5 @@
 from datetime import datetime
+from datetime import timezone as tz
 
 import pytest
 import time_machine
@@ -15,11 +16,11 @@ def test_clinic_is_scheduled():
 
 
 @pytest.mark.django_db
-@time_machine.travel(datetime(2025, 1, 1, 10))
+@time_machine.travel(datetime(2025, 1, 1, 10, tzinfo=tz.utc))
 def test_status_filtering():
-    current = ClinicFactory.create(starts_at=datetime(2025, 1, 1, 9))
-    future = ClinicFactory.create(starts_at=datetime(2025, 1, 2, 9))
-    past = ClinicFactory.create(starts_at=datetime(2024, 1, 1, 9))
+    current = ClinicFactory.create(starts_at=datetime(2025, 1, 1, 9, tzinfo=tz.utc))
+    future = ClinicFactory.create(starts_at=datetime(2025, 1, 2, 9, tzinfo=tz.utc))
+    past = ClinicFactory.create(starts_at=datetime(2024, 1, 1, 9, tzinfo=tz.utc))
 
     assertQuerySetEqual(
         models.Clinic.objects.all(), {current, future, past}, ordered=False
