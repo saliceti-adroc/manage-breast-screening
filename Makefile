@@ -35,7 +35,7 @@ help: # Print help @Others
 test: test-unit test-lint # Run all tests @Testing
 
 test-unit: # Run unit tests @Testing
-	DEBUG=1 poetry run pytest
+	TESTING=1 poetry run pytest
 
 test-lint: # Lint files @Testing
 	# TODO
