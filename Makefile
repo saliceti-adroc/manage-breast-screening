@@ -56,7 +56,7 @@ _install_poetry:
 _first_time_django_setup:
 	poetry install
 	poetry run ./manage.py migrate
-	poetry run ./manage.py loaddata example
+	poetry run ./manage.py loaddata clinics participants
 	npm install
 	npm run compile:css
 
