@@ -37,7 +37,6 @@ SECRET_KEY = environ.get("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = boolean_env("DEBUG", default=False)
-TESTING = boolean_env("TESTING", default=False)
 
 allowed_hosts = environ.get("ALLOWED_HOSTS")
 ALLOWED_HOSTS = allowed_hosts.split(",") if allowed_hosts else []
@@ -115,11 +114,7 @@ DATABASES = {
 
 STORAGES = {
     "staticfiles": {
-        "BACKEND": (
-            "django.contrib.staticfiles.storage.StaticFilesStorage"
-            if TESTING
-            else "whitenoise.storage.CompressedManifestStaticFilesStorage"
-        ),
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
     },
 }
 
