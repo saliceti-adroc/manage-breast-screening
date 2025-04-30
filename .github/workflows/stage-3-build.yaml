@@ -35,6 +35,7 @@ on:
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
+  DOCKER_METADATA_PR_HEAD_SHA: true
 
 jobs:
   build:
@@ -64,11 +65,9 @@ jobs:
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
-            type=schedule
-            type=ref,event=branch
             type=ref,event=tag
-            type=ref,event=pr
-            type=sha,format=long
+            type=ref,event=branch
+            type=sha,format=long,prefix=git-sha-
 
       - name: Build and push Docker image
         id: push
