@@ -3,7 +3,7 @@ from django.views.generic import RedirectView
 
 from . import forms, views
 
-app_name = "clinics"
+app_name = "record_a_mammogram"
 
 urlpatterns = [
     path(
