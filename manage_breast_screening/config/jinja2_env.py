@@ -1,28 +1,72 @@
+import re
+
 from django.templatetags.static import static
 from django.urls import reverse
 from jinja2 import ChoiceLoader, Environment, PackageLoader
 from markupsafe import Markup, escape
 
+from ..utils.date_formatting import (
+    format_date,
+    format_date_time,
+    format_relative_date,
+    format_time,
+    format_time_range,
+)
+
 
 def no_wrap(value):
-    return Markup(f'<span class="nhsuk-u-nowrap">{escape(value)}</span>' if value else "")
+    """
+    Wrap a string in a span with class app-no-wrap
+
+    >>> no_wrap('a really long string')
+    Markup('<span class="nhsuk-u-nowrap">a really long string</span>')
+    """
+    return Markup(
+        f'<span class="nhsuk-u-nowrap">{escape(value)}</span>' if value else ""
+    )
 
 
 def as_hint(value):
+    """
+    Wrap a string in a span with class app-text-grey
+
+    >>> as_hint('Not provided')
+    Markup('<span class="app-text-grey">Not provided</span>')
+    """
     return Markup(f'<span class="app-text-grey">{value}</span>' if value else "")
+
+
+def sentence_case(value):
+    """
+    Capitalise the first letter of a sentence.
+
+    >>> sentence_case('a quick brown fox jumps over the lazy dog')
+    'A quick brown fox jumps over the lazy dog'
+
+    Unlike the built in `capitalize` filter, this will preserve
+    capital letters already in the string:
+
+    >>> sentence_case('not in PACS')
+    'Not in PACS'
+    """
+    if not value:
+        return ""
+
+    return value[0].upper() + value[1:]
 
 
 def format_words(value, separator="_"):
     """
-    FIXME - ported from prototype
-    * Format separated words as a sentence, preserving acronyms
-    * Example: 'in_progress' becomes 'In progress'
-    * Example: 'not_in_PACS' becomes 'Not in PACS'
-    * Example: 'IBMs_server' becomes 'IBMs server'
-    * Example: 'IBM's_mainframe' becomes 'IBM's mainframe'
-    * @param {string} input - String to format
-    * @param {string} [separator='_'] - Character that separates words
-    * @returns {string} Formatted string as words
+    Format separated words as a sentence, preserving acronyms
+
+    >>> format_words('in_progress')
+    'in progress'
+
+    >>> format_words('not_in_PACS')
+    'not in PACS'
+
+    >>> format_words('IBMs_server')
+    'IBMs server'
     """
     if not value:
         return ""
@@ -34,36 +78,28 @@ def format_words(value, separator="_"):
         # - the whole thing is upper case
         # - there is an upper case character after the first letter
         if part == part.upper() or len(part) >= 2 and (part[1:].lower() != part[1:]):
+            # Use the acronym as is
             result.append(part)
         else:
+            # lowercase the word
             result.append(part.lower())
 
     return " ".join(parts)
 
 
-def format_date(value):
-    return value.strftime("%-d %B %Y")
+def format_nhs_number(value):
+    """
+    Format an NHS number with spaces
 
+    >>> format_nhs_number('9998887777')
+    '999 888 7777'
+    """
+    if not value:
+        return ""
 
-def format_date_time(value):
-    return value.strftime("%-d %B %Y, %H:%m")
+    digits = re.sub(r"\s", "", value)
 
-
-def format_time(value):
-    if value.minute == 0:
-        if value.hour == 0:
-            return "midnight"
-        if value.hour == 12:
-            return "midday"
-        return value.strftime("%-I%p").lower()
-
-    return value.strftime("%-I:%M%p").lower()
-
-
-def format_time_range(value):
-    start_time = format_time(value["start_time"])
-    end_time = format_time(value["end_time"])
-    return f"{start_time} to {end_time}"
+    return f"{digits[:3]} {digits[3:6]} {digits[6:]}"
 
 
 def environment(**options):
@@ -79,9 +115,12 @@ def environment(**options):
     )
     env.filters["noWrap"] = no_wrap
     env.filters["asHint"] = as_hint
+    env.filters["sentenceCase"] = sentence_case
     env.filters["formatWords"] = format_words
     env.filters["formatDate"] = format_date
-    env.filters["formatTimeString"] = format_date_time
-    env.filters["formatRelativeDate"] = format_date
+    env.filters["formatDateTime"] = format_date_time
+    env.filters["formatTimeString"] = format_time
+    env.filters["formatRelativeDate"] = format_relative_date
     env.filters["formatTimeRange"] = format_time_range
+    env.filters["formatNhsNumber"] = format_nhs_number
     return env
