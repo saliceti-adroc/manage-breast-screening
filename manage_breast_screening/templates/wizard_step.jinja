@@ -30,18 +30,8 @@
 
 {% block pageContent %}
 <div class="nhsuk-grid-row">
-  <div class="nhsuk-grid-column-full">
-
-  {% block heading %}
-  <h1 class="nhsuk-heading-l">
-    {% if caption %}
-      <span class="nhsuk-caption-l">{{ caption }}</span>
-    {% endif %}
-    {{title}}
-  </h1>
-  {% endblock heading %}
-
-  {% block stepContent %}{% endblock %}
+  <div class="nhsuk-grid-column-two-thirds">
+  <h1>{{title}}</h1>
 
   {% if form %}
   <form action="{{request.path}}" method="POST">
