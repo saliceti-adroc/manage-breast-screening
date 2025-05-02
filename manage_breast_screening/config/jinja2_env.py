@@ -55,38 +55,6 @@ def sentence_case(value):
     return value[0].upper() + value[1:]
 
 
-def format_words(value, separator="_"):
-    """
-    Format separated words as a sentence, preserving acronyms
-
-    >>> format_words('in_progress')
-    'in progress'
-
-    >>> format_words('not_in_PACS')
-    'not in PACS'
-
-    >>> format_words('IBMs_server')
-    'IBMs server'
-    """
-    if not value:
-        return ""
-
-    parts = value.split(separator)
-    result = []
-    for part in parts:
-        # Check for acronyms. Either:
-        # - the whole thing is upper case
-        # - there is an upper case character after the first letter
-        if part == part.upper() or len(part) >= 2 and (part[1:].lower() != part[1:]):
-            # Use the acronym as is
-            result.append(part)
-        else:
-            # lowercase the word
-            result.append(part.lower())
-
-    return " ".join(parts)
-
-
 def format_nhs_number(value):
     """
     Format an NHS number with spaces
@@ -116,7 +84,6 @@ def environment(**options):
     env.filters["noWrap"] = no_wrap
     env.filters["asHint"] = as_hint
     env.filters["sentenceCase"] = sentence_case
-    env.filters["formatWords"] = format_words
     env.filters["formatDate"] = format_date
     env.filters["formatDateTime"] = format_date_time
     env.filters["formatTimeString"] = format_time
