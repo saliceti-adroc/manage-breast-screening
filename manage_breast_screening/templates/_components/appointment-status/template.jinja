@@ -1,0 +1,27 @@
+{% from 'components/tag/macro.jinja' import tag %}
+
+{% set colors = {} %}
+
+{% set tagClasses = "nhsuk-tag--" ~ params.status.colour if params.status.colour else "" %}
+{% set tagClasses = tagClasses + " app-nowrap" %}
+
+<div data-event-status-container="{{ params.id }}">
+  {{ tag({
+    "text": params.status.text,
+    "classes": tagClasses | trim
+  })}}
+
+  {# Build href with optional referrer #}
+  {% set href -%}
+  #
+  {%- endset %}
+
+  {% if status == 'event_scheduled' %}
+    <p class="nhsuk-u-margin-top-2 nhsuk-u-margin-bottom-0">
+      <a href="{{ href | trim }}" class="nhsuk-link nhsuk-link--no-visited-state js-check-in-link" data-clinic-id="{{ params.clinicId }}"
+        data-event-id="{{ params.id }}">
+        Check in
+      </a>
+    </p>
+  {% endif %}
+</div>
