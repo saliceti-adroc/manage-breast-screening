@@ -83,11 +83,11 @@ def environment(**options):
     )
     env.filters["noWrap"] = no_wrap
     env.filters["asHint"] = as_hint
-    env.filters["sentenceCase"] = sentence_case
     env.filters["formatDate"] = format_date
     env.filters["formatDateTime"] = format_date_time
-    env.filters["formatTimeString"] = format_time
+    env.filters["formatNhsNumber"] = format_nhs_number
     env.filters["formatRelativeDate"] = format_relative_date
     env.filters["formatTimeRange"] = format_time_range
-    env.filters["formatNhsNumber"] = format_nhs_number
+    env.filters["formatTimeString"] = format_time
+    env.filters["sentenceCase"] = sentence_case
     return env
