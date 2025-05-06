@@ -163,4 +163,5 @@ class Appointment(BaseModel):
         choices=STATUS_CHOICES, max_length=50, default=Status.CONFIRMED
     )
     reinvite = models.BooleanField(default=False)
+    stopped_reasons = models.JSONField(null=True, blank=True)
 
