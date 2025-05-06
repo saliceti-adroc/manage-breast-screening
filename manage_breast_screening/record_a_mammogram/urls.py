@@ -7,11 +7,10 @@ app_name = "record_a_mammogram"
 
 urlpatterns = [
     path(
-        "",
-        RedirectView.as_view(pattern_name="record_a_mammogram:start_screening"),
-        name="index",
+        "appointments/<int:id>/start-screening/",
+        views.StartScreening.as_view(),
+        name="start_screening",
     ),
-    path("start-screening/", views.StartScreening.as_view(), name="start_screening"),
     path(
         "ask-for-medical-information/",
         views.AskForMedicalInformation.as_view(),
