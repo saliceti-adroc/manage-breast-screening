@@ -33,6 +33,10 @@ jobs:
           echo "python_version=$(grep "^python" .tool-versions | cut -f2 -d' ')" >> $GITHUB_OUTPUT
           echo "terraform_version=$(grep "^terraform" .tool-versions | cut -f2 -d' ')" >> $GITHUB_OUTPUT
           echo "version=${GITHUB_REF}" >> $GITHUB_OUTPUT
+  generate-diagrams:
+    name: "Generate generate-diagrams"
+    uses: ./.github/workflows/generate-diagrams.yaml
+    secrets: inherit
   commit-stage:
     name: "Commit stage"
     needs: [metadata]

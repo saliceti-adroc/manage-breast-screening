@@ -1,0 +1,28 @@
+name: Generate Structurizr Diagrams
+
+on:
+  pull_request:
+    paths:
+      - 'docs/diagrams/structurizr/**'
+
+jobs:
+  generate-diagrams:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Generate diagrams using Structurizr Lite Docker
+        run: |
+          mkdir -p docs/diagrams/images
+          docker run --rm \
+          -v ${{ github.workspace }}/docs/diagrams/structurizr:/usr/local/structurizr \
+          -v ${{ github.workspace }}/docs/diagrams/images:/usr/local/structurizr/export \
+          structurizr/lite export
+
+      - name: Upload diagrams as artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: c4-diagrams
+          path: docs/diagrams/images
