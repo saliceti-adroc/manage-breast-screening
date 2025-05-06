@@ -1,8 +1,10 @@
 [
   {
-    "model": "participants.Participant",
+    "model": "participants.participant",
     "pk": 1,
     "fields": {
+      "created_at": "2025-04-04T09:19:24.083Z",
+      "updated_at": "2025-05-02T15:07:56.836Z",
       "first_name": "Janet",
       "last_name": "Williams",
       "gender": "Female",
@@ -13,14 +15,17 @@
       "ethnicity": "",
       "address": "81 York Street, Worthing, BN11 0YE",
       "risk_level": "Routine",
-      "created_at": "2025-04-04T09:19:24.083Z",
-      "updated_at": "2025-04-04T09:19:24.083Z"
+      "extra_needs": [
+        "Wheelchair user"
+      ]
     }
   },
   {
-    "model": "participants.Participant",
+    "model": "participants.participant",
     "pk": 2,
     "fields": {
+      "created_at": "2025-04-04T09:19:24.083Z",
+      "updated_at": "2025-04-04T09:19:24.083Z",
       "first_name": "Dianna",
       "last_name": "McIntosh",
       "gender": "Female",
@@ -31,14 +36,15 @@
       "ethnicity": "",
       "address": "206 Albert Mews, Worthing, BN12 8NC",
       "risk_level": "Routine",
-      "created_at": "2025-04-04T09:19:24.083Z",
-      "updated_at": "2025-04-04T09:19:24.083Z"
+      "extra_needs": []
     }
   },
   {
-    "model": "participants.Participant",
+    "model": "participants.participant",
     "pk": 3,
     "fields": {
+      "created_at": "2025-04-04T09:19:24.083Z",
+      "updated_at": "2025-04-04T09:19:24.083Z",
       "first_name": "Jeannie",
       "last_name": "Kertzmann",
       "gender": "Female",
@@ -49,14 +55,15 @@
       "ethnicity": "",
       "address": "214 New Lane, Uccomplished House, Fort Carleestad, BN11 8FQ",
       "risk_level": "Routine",
-      "created_at": "2025-04-04T09:19:24.083Z",
-      "updated_at": "2025-04-04T09:19:24.083Z"
+      "extra_needs": []
     }
   },
   {
-    "model": "participants.Participant",
+    "model": "participants.participant",
     "pk": 4,
     "fields": {
+      "created_at": "2025-04-04T09:19:24.083Z",
+      "updated_at": "2025-04-04T09:19:24.083Z",
       "first_name": "Kendra",
       "last_name": "Koch",
       "gender": "Female",
@@ -67,14 +74,15 @@
       "ethnicity": "Asian or Asian British, Indian",
       "address": "115 Victoria Walk, Lake Eloyberg under-Edge, BN12 2HL",
       "risk_level": "Moderate",
-      "created_at": "2025-04-04T09:19:24.083Z",
-      "updated_at": "2025-04-04T09:19:24.083Z"
+      "extra_needs": []
     }
   },
   {
-    "model": "participants.Participant",
+    "model": "participants.participant",
     "pk": 5,
     "fields": {
+      "created_at": "2025-04-04T09:19:24.083Z",
+      "updated_at": "2025-04-04T09:19:24.083Z",
       "first_name": "Erika",
       "last_name": "Toy",
       "gender": "Female",
@@ -85,8 +93,7 @@
       "ethnicity": "",
       "address": "Ivy Cottage, Austin, BN10 0PT",
       "risk_level": "Routine",
-      "created_at": "2025-04-04T09:19:24.083Z",
-      "updated_at": "2025-04-04T09:19:24.083Z"
+      "extra_needs": []
     }
   }
 ]
