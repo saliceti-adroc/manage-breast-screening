@@ -15,6 +15,7 @@ dependencies = [
   "nhsuk-frontend-jinja @ git+https://github.com/NHSDigital/nhsuk-frontend-jinja.git@0.1.0",
   "python-dateutil (>=2.9.0.post0,<3.0.0)",
   "psycopg[binary] (>=3.2.7,<4.0.0)",
+  "ipdb (>=0.13.13,<0.14.0)",
 ]
 
 [tool.poetry]
