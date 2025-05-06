@@ -89,7 +89,7 @@ All clinics this week
       </td>
       <td class="nhsuk-table__cell--numeric">
         {{ tag({
-        "html": clinic.state | formatWords | capitalize | noWrap,
+        "html": clinic.get_state_display() | noWrap,
         "classes": "nhsuk-tag--" + STATUS_COLORS[clinic.state]
         })}}
       </td>
