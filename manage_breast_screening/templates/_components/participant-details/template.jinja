@@ -1,0 +1,197 @@
+{% from 'components/summary-list/macro.jinja' import summaryList %}
+
+{% set dob %}
+  {{ participant.date_of_birth | formatDate }}<br>
+  <span class="nhsuk-hint">({{ participant.age() | formatAge }})</span>
+{% endset %}
+
+{% set ethnicityHtml %}{{ participant.ethnicity | default('Not provided') }} {% endset %}
+
+{% set lastMammogramHtml %}
+  {% if lastKnownScreening %}
+    {{ lastKnownScreening.date | formatDate }} ({{ lastKnownScreening.date | formatRelativeDate | asHint }})
+    {% if lastKnownScreening.location %}
+      </br>{{ lastKnownScreening.location }}
+      {% if lastKnownScreening.type %}</br>{{ lastKnownScreening.type | sentenceCase }}{% endif %}
+    {% endif %}
+  {% else %}
+  {{ "Not known" | asHint }}
+  {% endif %}
+{% endset %}
+
+{{ summaryList({
+  "rows": [
+   {
+     "key": {
+       "text": "Full name"
+     },
+     "value": {
+       "text": participant.full_name
+     },
+     "actions": {
+        "items": [
+          {
+            "href": "#",
+            "text": "Change",
+            "visuallyHiddenText": "date of birth"
+          } if allowEdits else []
+        ]
+      }
+   },
+   {
+     "key": {
+       "text": "Gender"
+     },
+     "value": {
+       "text": "Female"
+     },
+     "actions": {
+        "items": [
+        ]
+     }
+   } if not isMinimalParticipant,
+   {
+     "key": {
+       "text": "NHS number"
+     },
+     "value": {
+       "text": participant.medicalInformation.nhsNumber | formatNhsNumber
+     },
+     "actions": {
+        "items": [
+        ]
+     }
+   } if not isMinimalParticipant,
+   {
+     "key": {
+       "text": "SX number"
+     },
+     "value": {
+       "text": participant.sxNumber
+     },
+     "actions": {
+        "items": [
+          {
+            "href": "#",
+            "text": "Change",
+            "visuallyHiddenText": "SX number"
+          } if allowEdits
+        ]
+      }
+   } if not isMinimalParticipant,
+   {
+     "key": {
+       "text": "Date of birth"
+     },
+     "value": {
+       "html": dob
+     },
+     "actions": {
+        "items": [
+        ]
+     }
+   },
+   {
+     "key": {
+       "text": "Ethnicity"
+     },
+     "value": {
+       "html": ethnicityHtml | safe
+     },
+     "actions": {
+        "items": [
+          {
+            "href": "#",
+            "text": "Change",
+            "visuallyHiddenText": "address"
+          } if false else []
+        ]
+      }
+   },
+   {
+     "key": {
+       "text": "Address"
+     },
+     "value": {
+       "html": participant.address
+     },
+     "actions": {
+        "items": [
+          {
+            "href": "#",
+            "text": "Change",
+            "visuallyHiddenText": "address"
+          } if allowEdits else []
+        ]
+      }
+   },
+   {
+     "key": {
+       "text": "Phone"
+     },
+     "value": {
+       "text": participant.phone | formatPhoneNumber
+     },
+     "actions": {
+        "items": [
+          {
+            "href": "#",
+            "text": "Change",
+            "visuallyHiddenText": "phone"
+          } if allowEdits
+        ]
+      }
+   } if not isMinimalParticipant,
+   {
+     "key": {
+       "text": "Email"
+     },
+     "value": {
+       "text": participant.demographicInformation.email
+     },
+     "actions": {
+        "items": [
+          {
+            "href": "#",
+            "text": "Change",
+            "visuallyHiddenText": "email"
+          } if allowEdits
+        ]
+      }
+   } if not isMinimalParticipant,
+   {
+     "key": {
+       "text": "Last known mammogram"
+     },
+     "value": {
+       "html": lastMammogramHtml
+     },
+     "actions": {
+        "items": [
+          {
+            "href": "#",
+            "text": "View or change",
+            "visuallyHiddenText": "email"
+          }
+        ]
+      }
+   },
+   {
+     "key": {
+       "text": "Risk level"
+     },
+     "value": {
+       "html": participant.risk_level | sentenceCase
+     },
+     "actions": {
+        "items": [
+          {
+            "href": "#",
+            "text": "View or update screening history",
+            "visuallyHiddenText": "email"
+          } if allowEdits else []
+        ]
+      }
+   }
+  ]
+}) }}
