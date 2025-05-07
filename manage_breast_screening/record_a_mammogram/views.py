@@ -1,10 +1,12 @@
 import logging
 
-from django.shortcuts import redirect, render
+from django.shortcuts import get_object_or_404, redirect, render
+from django.views.decorators.http import require_http_methods
 from django.views.generic import FormView
 
 from manage_breast_screening.clinics.models import Appointment
 
+from ..clinics.models import Appointment
 from .forms import (
     AppointmentCannotGoAheadForm,
     AskForMedicalInformationForm,
@@ -12,7 +14,26 @@ from .forms import (
     ScreeningAppointmentForm,
 )
 
+Status = Appointment.Status
+
 logger = logging.getLogger(__name__)
+
+
+def status_color(status):
+    """
+    Color to render the status tag
+    """
+    match status:
+        case Status.CHECKED_IN:
+            return ""  # no colour will get solid dark blue
+        case Status.SCREENED:
+            return "green"
+        case (Status.DID_NOT_ATTEND, Status.CANCELLED):
+            return "red"
+        case (Status.ATTENDED_NOT_SCREENED, Status.PARTIALLY_SCREENED):
+            return "orange"
+        case _:
+            return "blue"  # default blue
 
 
 class StartScreening(FormView):
@@ -34,6 +55,13 @@ class StartScreening(FormView):
         context["appointment"] = appointment
         context["clinic_slot"] = appointment.clinic_slot
         context["participant"] = appointment.screening_episode.participant
+
+        context["status"] = {
+            "colour": status_color(appointment.status),
+            "text": appointment.get_status_display(),
+            "key": appointment.status,
+        }
+        context["Status"] = Status
 
         last_known_screening = appointment.screening_episode.previous()
 
@@ -90,3 +118,12 @@ class AppointmentCannotGoAhead(FormView):
 
 def awaiting_images(request):
     return render(request, "record_a_mammogram/awaiting_images.jinja", {})
+
+
+@require_http_methods(["POST"])
+def check_in(request, id):
+    appointment = get_object_or_404(Appointment, pk=id)
+    appointment.status = Appointment.Status.CHECKED_IN
+    appointment.save()
+
+    return redirect("record_a_mammogram:start_screening", id=id)

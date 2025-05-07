@@ -44,3 +44,22 @@ class TestStartScreening:
             {},
         )
         assertContains(response, "There is a problem")
+
+
+@pytest.mark.django_db
+class TestCheckIn:
+    @pytest.fixture(autouse=True)
+    def setup(self):
+        self.appointment = AppointmentFactory.create()
+
+    def test_known_redirect(self, client):
+        response = client.post(
+            reverse("record_a_mammogram:check_in", kwargs={"id": self.appointment.pk}),
+            {"next": "start-screening"},
+        )
+        assertRedirects(
+            response,
+            reverse(
+                "record_a_mammogram:start_screening", kwargs={"id": self.appointment.pk}
+            ),
+        )

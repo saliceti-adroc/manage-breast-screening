@@ -11,17 +11,14 @@
     "classes": tagClasses | trim
   })}}
 
-  {# Build href with optional referrer #}
-  {% set href -%}
-  #
-  {%- endset %}
-
-  {% if status == 'event_scheduled' %}
+  {% if params.status.key == params.allStatuses.CONFIRMED %}
+    <form action="{{ url('record_a_mammogram:check_in', kwargs={'id': params.id}) }}" <form method="post" novalidate>
     <p class="nhsuk-u-margin-top-2 nhsuk-u-margin-bottom-0">
-      <a href="{{ href | trim }}" class="nhsuk-link nhsuk-link--no-visited-state js-check-in-link" data-clinic-id="{{ params.clinicId }}"
-        data-event-id="{{ params.id }}">
+      <button class="app-button--link">
         Check in
-      </a>
+      </button>
     </p>
+    {{params.csrfInput}}
+    </form>
   {% endif %}
 </div>

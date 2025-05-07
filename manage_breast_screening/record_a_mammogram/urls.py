@@ -1,11 +1,15 @@
 from django.urls import path
-from django.views.generic import RedirectView
 
-from . import forms, views
+from . import views
 
 app_name = "record_a_mammogram"
 
 urlpatterns = [
+    path(
+        "appointments/<int:id>/check-in/",
+        views.check_in,
+        name="check_in",
+    ),
     path(
         "appointments/<int:id>/start-screening/",
         views.StartScreening.as_view(),

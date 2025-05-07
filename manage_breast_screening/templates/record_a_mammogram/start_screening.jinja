@@ -22,11 +22,12 @@
     <div class="app-header-with-status__status-tag">
       {{ appointmentStatus({
         "clinicId": clinic.id,
-        "id": 123,
-        "status": {"colour": "", "text": "Checked in"},
-        "referrer": request.path
+        "id": appointment.id,
+        "status": status,
+        "allStatuses": Status,
+        "csrfInput": csrf_input
       })}}
-  </div>
+    </div>
 {% endblock %}
 
 {% block stepContent %}

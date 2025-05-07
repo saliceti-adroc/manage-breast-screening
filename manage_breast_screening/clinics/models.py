@@ -144,6 +144,7 @@ class Appointment(BaseModel):
         DID_NOT_ATTEND = "DID_NOT_ATTEND"
         CHECKED_IN = "CHECKED_IN"
         SCREENED = "SCREENED"
+        PARTIALLY_SCREENED = "PARTIALLY_SCREENED"
         ATTENDED_NOT_SCREENED = "ATTENDED_NOT_SCREENED"
 
     STATUS_CHOICES = {
@@ -152,6 +153,7 @@ class Appointment(BaseModel):
         Status.DID_NOT_ATTEND: "Did not attend",
         Status.CHECKED_IN: "Checked in",
         Status.SCREENED: "Screened",
+        Status.PARTIALLY_SCREENED: "Partially screened",
         Status.ATTENDED_NOT_SCREENED: "Attended not screened",
     }
 
