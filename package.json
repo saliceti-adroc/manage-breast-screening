@@ -4,7 +4,7 @@
     "sass": "^1.87.0"
   },
   "scripts": {
-    "compile:css": "sass --load-path=. manage_breast_screening/assets/sass:manage_breast_screening/assets/compiled/css",
-    "compile:css:watch": "sass -o manage_breast_screening/assets/compiled/css manage_breast_screening/assets/sass --watch"
+    "compile:css": "sass --quiet-deps --silence-deprecation=import --load-path=. --load-path=node_modules manage_breast_screening/assets/sass:manage_breast_screening/assets/compiled/css",
+    "compile:css:watch": "sass --quiet-deps --silence-deprecation=import --load-path=. --load-path=node_modules manage_breast_screening/assets/sass:manage_breast_screening/assets/compiled/css --watch"
   }
 }
