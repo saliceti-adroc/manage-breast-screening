@@ -6,6 +6,8 @@ https://service-manual.nhs.uk/content/numbers-measurements-dates-time
 
 from datetime import date, datetime
 
+from dateutil.relativedelta import relativedelta
+
 
 def format_date(value):
     """
@@ -28,8 +30,10 @@ def format_relative_date(value: datetime | date):
     today = date.today()
     days = (value - today).days
 
+    amount = _format_date_difference(value, today)
+
     if days < -1:
-        return f"{abs(days)} days ago"
+        return f"{amount} ago"
     elif days == -1:
         return "yesterday"
     elif days == 0:
@@ -37,7 +41,21 @@ def format_relative_date(value: datetime | date):
     elif days == 1:
         return "tomorrow"
     else:
-        return f"in {days} days"
+        return f"in {amount}"
+
+
+def _format_date_difference(date1, date2):
+    diff = relativedelta(date1, date2) if date1 > date2 else relativedelta(date2, date1)
+
+    parts = []
+    if diff.years:
+        parts.append("1 year" if diff.years == 1 else f"{diff.years} years")
+    if diff.months:
+        parts.append("1 month" if diff.months == 1 else f"{diff.months} months")
+    if diff.days:
+        parts.append("1 day" if diff.days == 1 else f"{diff.days} days")
+
+    return ", ".join(parts) if parts else ""
 
 
 def format_date_time(value):

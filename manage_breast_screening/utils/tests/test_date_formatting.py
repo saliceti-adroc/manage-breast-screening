@@ -17,6 +17,10 @@ from ..date_formatting import format_relative_date
         ("2025-04-30T08:00:00", "2 days ago"),
         ("2025-05-03T07:00:00", "tomorrow"),
         ("2025-05-04T12:00:00", "in 2 days"),
+        ("2024-05-02T12:00:00", "1 year ago"),
+        ("2024-04-02T12:00:00", "1 year, 1 month ago"),
+        ("2024-03-31T12:00:00", "1 year, 1 month, 2 days ago"),
+        ("2026-03-31T12:00:00", "in 10 months, 29 days"),
     ),
 )
 def test_relative_dates(dateiso, output):
