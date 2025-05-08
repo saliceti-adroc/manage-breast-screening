@@ -6,7 +6,7 @@
 {% from 'components/error-summary/macro.jinja' import errorSummary %}
 
 {% block beforeContent %}
-{#- Using javascript temporarily - this should be replaced with proper URLs -#}
+{# Using javascript temporarily - this should be replaced with proper URLs #}
 {{ backLink({
   "href": "javascript:history.back()",
   "text": "Go back"
@@ -34,9 +34,9 @@
 
   {% block heading %}
   <h1 class="nhsuk-heading-l">
-    {%- if caption %}
+    {% if caption %}
       <span class="nhsuk-caption-l">{{ caption }}</span>
-    {% endif -%}
+    {% endif %}
     {{title}}
   </h1>
   {% endblock heading %}

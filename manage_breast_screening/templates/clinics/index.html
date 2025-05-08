@@ -1,9 +1,8 @@
 {% extends 'layout-app.html' %}
 
-{%- from 'components/tag/macro.jinja' import tag %}
-{%- from '_components/count/macro.jinja' import appCount %}
-{%- from '_components/secondary-navigation/macro.jinja' import appSecondaryNavigation %}
-
+{% from 'components/tag/macro.jinja' import tag %}
+{% from '_components/count/macro.jinja' import appCount %}
+{% from '_components/secondary-navigation/macro.jinja' import appSecondaryNavigation %}
 
 {% set pageHeading %}
 {% if filter == 'today' %}
@@ -29,9 +28,7 @@ All clinics this week
 { "id": 'completed', "label": 'Completed' },
 { "id": 'all', "label": 'All' }
 ] %}
-{% set href -%}
-/clinics/{{ item.id }}
-{% endset %}
+{% set href %}/clinics/{{ item.id }}{% endset %}
 {% set ns.secondaryNavItems = ns.secondaryNavItems + [{
 "text": (item.label + " " + appCount(filteredClinicCounts[item.id])) | safe,
 "href": href | trim,
