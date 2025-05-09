@@ -8,7 +8,7 @@
 <div data-event-status-container="{{ params.id }}">
   {{ tag({
     "text": params.status.text,
-    "classes": tagClasses | trim
+    "classes": tagClasses
   })}}
 
   {% if params.status.key == params.allStatuses.CONFIRMED %}
