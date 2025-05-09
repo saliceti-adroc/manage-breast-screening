@@ -70,6 +70,10 @@ def format_nhs_number(value):
     return f"{digits[:3]} {digits[3:6]} {digits[6:]}"
 
 
+def format_age(value: int) -> str:
+    return f"{value} years old"
+
+
 def environment(**options):
     env = Environment(**options)
     if env.loader:
@@ -83,6 +87,7 @@ def environment(**options):
     )
     env.filters["noWrap"] = no_wrap
     env.filters["asHint"] = as_hint
+    env.filters["formatAge"] = format_age
     env.filters["formatDate"] = format_date
     env.filters["formatDateTime"] = format_date_time
     env.filters["formatNhsNumber"] = format_nhs_number

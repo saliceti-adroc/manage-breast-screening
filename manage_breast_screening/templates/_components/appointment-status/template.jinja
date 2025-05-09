@@ -1,0 +1,24 @@
+{% from 'components/tag/macro.jinja' import tag %}
+
+{% set colors = {} %}
+
+{% set tagClasses = "nhsuk-tag--" ~ params.status.colour if params.status.colour else "" %}
+{% set tagClasses = tagClasses + " app-nowrap" %}
+
+<div data-event-status-container="{{ params.id }}">
+  {{ tag({
+    "text": params.status.text,
+    "classes": tagClasses
+  })}}
+
+  {% if params.status.key == params.allStatuses.CONFIRMED %}
+    <form action="{{ url('record_a_mammogram:check_in', kwargs={'id': params.id}) }}" <form method="post" novalidate>
+    <p class="nhsuk-u-margin-top-2 nhsuk-u-margin-bottom-0">
+      <button class="app-button--link">
+        Check in
+      </button>
+    </p>
+    {{params.csrfInput}}
+    </form>
+  {% endif %}
+</div>

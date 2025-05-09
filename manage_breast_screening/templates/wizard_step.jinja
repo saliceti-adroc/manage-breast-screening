@@ -6,7 +6,7 @@
 {% from 'components/error-summary/macro.jinja' import errorSummary %}
 
 {% block beforeContent %}
-{#- Using javascript temporarily - this should be replaced with proper URLs -#}
+{# Using javascript temporarily - this should be replaced with proper URLs #}
 {{ backLink({
   "href": "javascript:history.back()",
   "text": "Go back"
@@ -31,48 +31,62 @@
 {% block pageContent %}
 <div class="nhsuk-grid-row">
   <div class="nhsuk-grid-column-full">
-  <h1>{{title}}</h1>
+
+  {% block heading %}
+  <h1 class="nhsuk-heading-l">
+    {% if caption %}
+      <span class="nhsuk-caption-l">{{ caption }}</span>
+    {% endif %}
+    {{title}}
+  </h1>
+  {% endblock heading %}
+
+  {% block stepContent %}{% endblock %}
 
   {% if form %}
   <form action="{{request.path}}" method="POST">
-  {% block form %}{% endblock form %}
+    <div class="nhsuk-grid-row">
+        <div class="nhsuk-grid-column-two-thirds">
+          {% block form %}{% endblock form %}
 
-  {% if form.decision %}
-    {% if form.decision.errors %}
-      {% set errorMessage = {"text": form.decision.errors | first} %}
-    {% endif %}
+          {% if form.decision %}
+            {% if form.decision.errors %}
+              {% set errorMessage = {"text": form.decision.errors | first} %}
+            {% endif %}
 
-    {{ radios({
-      "name": form.decision.html_name,
-      "fieldset": {
-        "legend": {
-          "text": decision_legend,
-          "classes": "nhsuk-fieldset__legend--m",
-          "isPageHeading": false
-        }
-      },
-      "errorMessage": errorMessage,
-      "hint": {
-        html: decision_hint|e
-      },
-      "items": [
-        {
-          "value": "continue",
-          "text": form.decision[0].choice_label
-        },
-        {
-          "value": "dropout",
-          "text": form.decision[1].choice_label
-        }
-      ]
-    }) }}
-  {% endif %}
+            {{ radios({
+              "name": form.decision.html_name,
+              "fieldset": {
+                "legend": {
+                  "text": decision_legend,
+                  "classes": "nhsuk-fieldset__legend--m",
+                  "isPageHeading": false
+                }
+              },
+              "errorMessage": errorMessage,
+              "hint": {
+                "html": decision_hint|e
+              },
+              "items": [
+                {
+                  "value": "continue",
+                  "text": form.decision[0].choice_label
+                },
+                {
+                  "value": "dropout",
+                  "text": form.decision[1].choice_label
+                }
+              ]
+            }) }}
+          {% endif %}
 
-  {{ button({
-    "text": "Continue"
-  }) }}
+          {{ button({
+            "text": "Continue"
+          }) }}
 
-  {{csrf_input}}
+          {{csrf_input}}
+        </div>
+    </div>
   </form>
 
   {% endif %}

@@ -108,11 +108,33 @@ class ClinicSlot(BaseModel):
     starts_at = models.DateTimeField()
     duration_in_minutes = models.IntegerField()
 
-    # TODO: add unique constrants
-
 
 class ScreeningEpisode(BaseModel):
-    participant = models.ForeignKey("participants.Participant", on_delete=models.CASCADE)
+    participant = models.ForeignKey(
+        "participants.Participant", on_delete=models.CASCADE
+    )
+
+    def screening_history(self):
+        """
+        Return all previous screening episodes, excluding this one, prefetching
+        their appointment details as well.
+        """
+        return (
+            ScreeningEpisode.objects.prefetch_related(
+                "appointment_set__clinic_slot__clinic__setting__provider"
+            )
+            .filter(participant__pk=self.participant.pk, pk__lt=self.pk)
+            .order_by("-pk")
+        )
+
+    def previous(self) -> "ScreeningEpisode | None":
+        """
+        Return the last known screening episode
+        """
+        try:
+            return self.screening_history()[0]
+        except IndexError:
+            return None
 
 
 class Appointment(BaseModel):
@@ -122,6 +144,7 @@ class Appointment(BaseModel):
         DID_NOT_ATTEND = "DID_NOT_ATTEND"
         CHECKED_IN = "CHECKED_IN"
         SCREENED = "SCREENED"
+        PARTIALLY_SCREENED = "PARTIALLY_SCREENED"
         ATTENDED_NOT_SCREENED = "ATTENDED_NOT_SCREENED"
 
     STATUS_CHOICES = {
@@ -130,10 +153,12 @@ class Appointment(BaseModel):
         Status.DID_NOT_ATTEND: "Did not attend",
         Status.CHECKED_IN: "Checked in",
         Status.SCREENED: "Screened",
+        Status.PARTIALLY_SCREENED: "Partially screened",
         Status.ATTENDED_NOT_SCREENED: "Attended not screened",
     }
 
     screening_episode = models.ForeignKey(ScreeningEpisode, on_delete=models.CASCADE)
     clinic_slot = models.ForeignKey(ClinicSlot, on_delete=models.CASCADE)
-    status = models.CharField(choices=STATUS_CHOICES, max_length=50, default=Status.CONFIRMED)
-
+    status = models.CharField(
+        choices=STATUS_CHOICES, max_length=50, default=Status.CONFIRMED
+    )

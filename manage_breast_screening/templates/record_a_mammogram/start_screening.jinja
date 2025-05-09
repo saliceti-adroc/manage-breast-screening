@@ -1,5 +1,61 @@
 {% extends "wizard_step.jinja" %}
+{% from 'components/card/macro.jinja' import card %}
+{% from 'components/warning-callout/macro.jinja' import warningCallout %}
+{% from '_components/appointment-status/macro.jinja' import appointmentStatus %}
+{% from '_components/appointment-header/macro.jinja' import appointmentHeader %}
+{% from '_components/participant-details/macro.jinja' import participantDetails %}
 
-{% set title = "Screening appointment" %}
+{% set caption = clinic_slot.clinic.get_type_display() | capitalize ~ " appointment" %}
+{% set title = participant.first_name ~ " " ~ participant.last_name %}
 {% set decision_legend = "Can the appointment go ahead?" %}
 {% set decision_hint = "Before you proceed, check the participant’s identity and confirm that their last mammogram was more than 6 months ago." %}
+
+{% block heading %}
+  <div class="app-header-with-status">
+    <h1 class="nhsuk-heading-l">
+      <span class="nhsuk-caption-l">
+        {{ caption }}
+      </span>
+      {{ title }}
+    </h1>
+
+    <div class="app-header-with-status__status-tag">
+      {{ appointmentStatus({
+        "clinicId": clinic.id,
+        "id": appointment.id,
+        "status": status,
+        "allStatuses": Status,
+        "csrfInput": csrf_input
+      })}}
+    </div>
+{% endblock %}
+
+{% block stepContent %}
+  {{ appointmentHeader(appointment) }}
+
+  {% set specialAppointmentHtml %}
+    {% if participant.extra_needs | length > 1 %}
+      <ul>
+        {% for need in participant.extra_needs %}
+          <li>{{need}}</li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p>{{ participant.extra_needs | first }}</p>
+    {% endif %}
+    <p><a href="#">Change</a></p>
+  {% endset %}
+
+  {% if participant.extra_needs %}
+    {{ warningCallout({
+      "heading": "Special appointment",
+      "HTML": specialAppointmentHtml
+    }) }}
+  {% endif %}
+
+  {{ card({
+    "headingHtml": " ",
+    "headingLevel": "2",
+    "descriptionHtml": participantDetails(participant=participant, lastKnownScreening=last_known_screening)
+  }) }}
+{% endblock %}
