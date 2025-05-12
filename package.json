@@ -2,6 +2,9 @@
   "dependencies": {
     "nhsuk-frontend": "^9.4.1"
   },
+  "engines": {
+    "node": "^20.9.0 || ^22.11.0"
+  },
   "scripts": {
     "compile": "concurrently \"npm run compile:js\" \"npm run compile:css\"",
     "watch": "concurrently \"npm run compile:js:watch\" \"npm run compile:css:watch\"",
