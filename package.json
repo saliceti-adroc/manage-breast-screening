@@ -1,7 +1,7 @@
 {
   "dependencies": {
     "nhsuk-frontend": "^9.4.1",
-    "sass": "^1.87.0"
+    "sass": "^1.88.0"
   },
   "scripts": {
     "compile:css": "sass --quiet-deps --silence-deprecation=import --load-path=. --load-path=node_modules manage_breast_screening/assets/sass:manage_breast_screening/assets/compiled/css",
