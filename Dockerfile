@@ -12,8 +12,8 @@ RUN apk add --no-cache bash
 # Compile static assets
 COPY package.json package-lock.json ./
 COPY manage_breast_screening ./manage_breast_screening
-RUN npm install --omit=dev
-RUN npm run compile:css
+RUN npm ci
+RUN npm run compile
 
 FROM python:3.13.3-alpine3.21@sha256:452682e4648deafe431ad2f2391d726d7c52f0ff291be8bd4074b10379bb89ff AS python_builder
 ARG poetry_version
