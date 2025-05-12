@@ -3,14 +3,10 @@
 {% from 'components/input/macro.jinja' import input %}
 {% from 'components/radios/macro.jinja' import radios %}
 
-{% block form %}
-<h1 class="nhsuk-heading-l">
-  <span class="nhsuk-caption-l">
-    {{ "TBD" }}
-  </span>
-  Appointment cannot go ahead
-</h1>
+{% set title = "Appointment cannot go ahead" %}
+{% set caption = "TBD" %}
 
+{% block form %}
 {% macro conditionalCheckboxInput(params) %}
   {% set details_field_name = params.field_name + "_details" %}
   {% set input_params = {
