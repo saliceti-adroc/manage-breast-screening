@@ -2,18 +2,18 @@ ARG poetry_version=2.1.2
 
 #### NODE.JS BUILD
 
-FROM node:24.0.0-alpine3.21@sha256:7804c7734b3e0cf647ab8273a1d4cda776123145da5952732f3dca9e742ddca0 AS node_builder
+FROM node:22.15.0-alpine3.21@sha256:ad1aedbcc1b0575074a91ac146d6956476c1f9985994810e4ee02efd932a68fd AS node_builder
 
 WORKDIR /app
 
-# Install dependencies for npm install command
+# Install dependencies for npm ci command
 RUN apk add --no-cache bash
 
 # Compile static assets
-COPY package.json package-lock.json ./
+COPY .browserslistrc babel.config.json package.json package-lock.json rollup.config.mjs  ./
 COPY manage_breast_screening ./manage_breast_screening
-RUN npm install --omit=dev
-RUN npm run compile:css
+RUN npm ci
+RUN npm run compile
 
 FROM python:3.13.3-alpine3.21@sha256:452682e4648deafe431ad2f2391d726d7c52f0ff291be8bd4074b10379bb89ff AS python_builder
 ARG poetry_version
