@@ -90,7 +90,7 @@ class StartScreening(FormView):
         if form.cleaned_data["decision"] == "continue":
             return redirect("record_a_mammogram:ask_for_medical_information")
         else:
-            return redirect("record_a_mammogram:appointment_cannot_go_ahead")
+            return redirect("record_a_mammogram:appointment_cannot_go_ahead", id=self.get_appointment().pk)
 
 
 class AskForMedicalInformation(FormView):
@@ -116,11 +116,11 @@ class RecordMedicalInformation(FormView):
         if form.cleaned_data["decision"] == "continue":
             return redirect("record_a_mammogram:awaiting_images")
         else:
-            return redirect("record_a_mammogram:appointment_cannot_go_ahead")
+            return redirect("record_a_mammogram:appointment_cannot_go_ahead", id=self.appointment.pk)
 
 
-def appointment_cannot_go_ahead(request, pk):
-    appointment = Appointment.objects.get(pk=pk)
+def appointment_cannot_go_ahead(request, id):
+    appointment = Appointment.objects.get(pk=id)
     participant = appointment.screening_episode.participant
     if request.method == 'POST':
         form = AppointmentCannotGoAheadForm(request.POST, instance=appointment)

@@ -33,7 +33,7 @@ class TestStartScreening:
             {"decision": "dropout"},
         )
         assertRedirects(
-            response, reverse("record_a_mammogram:appointment_cannot_go_ahead")
+            response, reverse("record_a_mammogram:appointment_cannot_go_ahead", kwargs={"id": self.appointment.pk})
         )
 
     def test_renders_invalid_form(self, client):
