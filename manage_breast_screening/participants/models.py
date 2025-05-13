@@ -16,7 +16,7 @@ class Participant(BaseModel):
     ethnicity = models.TextField()
     address = models.TextField()
     risk_level = models.TextField()
-    extra_needs = models.JSONField(null=False, default=[])
+    extra_needs = models.JSONField(null=False, default=list)
 
     @property
     def full_name(self):

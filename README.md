@@ -61,6 +61,21 @@ To watch for changes, run `npm run watch`
 
 This will compile scss files to css and bundle javascripts with [rollup.js](https://rollupjs.org/).
 
+### Postgres database
+
+The makefile spins up a postgres DB using docker/podman.
+
+- `make db` starts it if not running
+- `make rebuild-db` rebuilds it from scratch, including seed data
+
+#### Migrations
+
+Database migrations are handled by [Django's database migration functionality](https://docs.djangoproject.com/en/5.2/topics/migrations/)
+
+- `poetry run manage.py migrate` loads database migrations
+- `poetry run manage.py makemigrations` generates new database migrations
+
+
 ### Django admin
 We'll probably remove it before deploying to production, but currently Django admin is enabled.
 
