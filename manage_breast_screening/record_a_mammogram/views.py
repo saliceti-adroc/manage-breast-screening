@@ -121,6 +121,7 @@ class RecordMedicalInformation(FormView):
 
 def appointment_cannot_go_ahead(request, pk):
     appointment = Appointment.objects.get(pk=pk)
+    participant = appointment.screening_episode.participant
     if request.method == 'POST':
         form = AppointmentCannotGoAheadForm(request.POST, instance=appointment)
         if form.is_valid():
@@ -132,7 +133,7 @@ def appointment_cannot_go_ahead(request, pk):
     return render(
         request,
         'record_a_mammogram/appointment_cannot_go_ahead.jinja',
-        {'form': form}
+        {'form': form, 'participant': participant}
     )
 
 

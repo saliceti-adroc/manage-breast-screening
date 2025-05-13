@@ -4,7 +4,7 @@
 {% from 'components/radios/macro.jinja' import radios %}
 
 {% set title = "Appointment cannot go ahead" %}
-{% set caption = "TBD" %}
+{% set caption = participant.full_name %}
 
 {% block form %}
 {% macro conditionalCheckboxInput(params) %}
