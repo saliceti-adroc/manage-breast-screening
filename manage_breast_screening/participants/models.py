@@ -1,5 +1,6 @@
 from datetime import date
 
+from django.contrib.postgres.fields import ArrayField
 from django.db import models
 
 from manage_breast_screening.clinics.models import BaseModel
@@ -13,10 +14,9 @@ class Participant(BaseModel):
     phone = models.TextField()
     email = models.EmailField()
     date_of_birth = models.DateField()
-    ethnicity = models.TextField()
-    address = models.TextField()
+    ethnicity = models.TextField(blank=True)
     risk_level = models.TextField()
-    extra_needs = models.JSONField(null=False, default=list)
+    extra_needs = models.JSONField(null=False, default=list, blank=True)
 
     @property
     def full_name(self):
@@ -31,3 +31,11 @@ class Participant(BaseModel):
             return today.year - self.date_of_birth.year
         else:
             return today.year - self.date_of_birth.year - 1
+
+
+class ParticipantAddress(models.Model):
+    participant = models.OneToOneField(
+        Participant, on_delete=models.CASCADE, related_name="address"
+    )
+    lines = ArrayField(models.CharField(), size=5, blank=True)
+    postcode = models.CharField(blank=True, null=True)
