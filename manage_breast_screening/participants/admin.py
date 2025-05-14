@@ -1,5 +1,14 @@
 from django.contrib import admin
 
-from .models import Participant
+from .models import Participant, ParticipantAddress
 
-admin.site.register(Participant)
+
+class AddressInline(admin.TabularInline):
+    model = ParticipantAddress
+
+
+class ParticipantAdmin(admin.ModelAdmin):
+    inlines = [AddressInline]
+
+
+admin.site.register(Participant, ParticipantAdmin)

@@ -7,6 +7,16 @@
 
 {% set ethnicityHtml %}{{ participant.ethnicity | default('Not provided') }} {% endset %}
 
+{% set addressHtml %}
+  {% if participant.address %}
+    {% for line in participant.address.lines %}
+      {{ line }}<br>
+    {% endfor %}
+    {{ address.postcode }}
+  {% endif %}
+{% endset %}
+{% set addressHtml = addressHtml | trim | default("Not provided") %}
+
 {% set lastMammogramHtml %}
   {% if lastKnownScreening %}
     {{ lastKnownScreening.date | formatDate }} ({{ lastKnownScreening.date | formatRelativeDate | asHint }})
@@ -113,7 +123,7 @@
        "text": "Address"
      },
      "value": {
-       "html": participant.address
+       "html": addressHtml
      },
      "actions": {
         "items": [
