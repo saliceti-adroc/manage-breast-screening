@@ -14,6 +14,7 @@ from .forms import (
     RecordMedicalInformationForm,
     ScreeningAppointmentForm,
 )
+from manage_breast_screening.clinics.models import Appointment
 
 Status = Appointment.Status
 
@@ -89,7 +90,7 @@ class StartScreening(FormView):
         if form.cleaned_data["decision"] == "continue":
             return redirect("record_a_mammogram:ask_for_medical_information")
         else:
-            return redirect("record_a_mammogram:appointment_cannot_go_ahead")
+            return redirect("record_a_mammogram:appointment_cannot_go_ahead", id=self.get_appointment().pk)
 
 
 class AskForMedicalInformation(FormView):
@@ -115,12 +116,25 @@ class RecordMedicalInformation(FormView):
         if form.cleaned_data["decision"] == "continue":
             return redirect("record_a_mammogram:awaiting_images")
         else:
-            return redirect("record_a_mammogram:appointment_cannot_go_ahead")
+            return redirect("record_a_mammogram:appointment_cannot_go_ahead", id=self.appointment.pk)
 
 
-class AppointmentCannotGoAhead(FormView):
-    template_name = "record_a_mammogram/appointment_cannot_go_ahead.jinja"
-    form_class = AppointmentCannotGoAheadForm
+def appointment_cannot_go_ahead(request, id):
+    appointment = Appointment.objects.get(pk=id)
+    participant = appointment.screening_episode.participant
+    if request.method == 'POST':
+        form = AppointmentCannotGoAheadForm(request.POST, instance=appointment)
+        if form.is_valid():
+            form.save()
+            return redirect('clinics:index')
+    else:
+        form = AppointmentCannotGoAheadForm(instance=appointment)
+
+    return render(
+        request,
+        'record_a_mammogram/appointment_cannot_go_ahead.jinja',
+        {'form': form, 'participant': participant}
+    )
 
 
 def awaiting_images(request):

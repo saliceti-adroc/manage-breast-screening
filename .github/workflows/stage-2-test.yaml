@@ -66,12 +66,13 @@ jobs:
           cache-dependency-path: ./poetry.lock
 
       - name: Install dependencies
-        run:
-          make dependencies
+        run: make dependencies
+
+      - name: Install Playwright browsers
+        run: poetry run playwright install chromium --with-deps
 
       - name: "Run unit test suite"
-        run: |
-          make test-unit
+        run: make test-unit
         env:
           DATABASE_NAME: postgres
           DATABASE_PASSWORD: postgres

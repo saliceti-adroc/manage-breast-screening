@@ -1,0 +1,74 @@
+import re
+from django.urls import reverse
+from playwright.sync_api import expect
+
+from manage_breast_screening.config.system_test_setup import SystemTestCase
+from manage_breast_screening.clinics.tests.factories import AppointmentFactory, ScreeningEpisodeFactory
+from manage_breast_screening.participants.tests.factories import ParticipantFactory
+from manage_breast_screening.clinics.models import Appointment
+
+class UserSubmitsCannotGoAheadForm(SystemTestCase):
+    def setUp(self):
+        super().setUp()
+        self.participant = ParticipantFactory()
+        self.screening_episode = ScreeningEpisodeFactory(participant=self.participant)
+        self.appointment = AppointmentFactory(screening_episode=self.screening_episode)
+
+    def test_user_submits_cannot_go_ahead_form(self):
+        self.given_i_am_on_the_cannot_go_ahead_form()
+        self.when_i_submit_the_form()
+        self.then_i_should_see_validation_errors()
+
+        self.when_i_select_a_reason_for_the_appointment_being_stopped()
+        self.and_i_select_other_as_a_reason()
+        self.and_i_choose_to_add_the_participant_to_the_reinvite_list()
+        self.when_i_submit_the_form()
+        self.then_i_see_an_error_for_other_details()
+
+        self.when_i_fill_in_other_details()
+        self.when_i_submit_the_form()
+        self.then_i_see_the_clinics_page()
+        self.and_the_appointment_is_updated()
+
+
+    def given_i_am_on_the_cannot_go_ahead_form(self):
+        self.page.goto(
+            self.live_server_url + reverse(
+                "record_a_mammogram:appointment_cannot_go_ahead", kwargs={"id": self.appointment.pk}
+            )
+        )
+
+    def when_i_submit_the_form(self):
+        self.page.get_by_role("button", name="Continue").click()
+
+    def then_i_should_see_validation_errors(self):
+        expect(
+            self.page.locator("#stopped_reasons-error")
+        ).to_have_text(re.compile("A reason for why this appointment cannot continue must be provided"))
+
+    def when_i_select_a_reason_for_the_appointment_being_stopped(self):
+        self.page.get_by_label("Failed identity check").check()
+
+    def and_i_select_other_as_a_reason(self):
+        self.page.get_by_label("Other").check()
+
+    def and_i_choose_to_add_the_participant_to_the_reinvite_list(self):
+        self.page.get_by_label("Yes, add participant to reinvite list").click()
+        expect(self.page.get_by_label("Yes, add participant to reinvite list")).to_be_checked()
+
+    def then_i_see_an_error_for_other_details(self):
+        expect(
+            self.page.locator("#other_details-error")
+        ).to_have_text(re.compile("Explain why this appointment cannot proceed"))
+
+    def when_i_fill_in_other_details(self):
+        self.page.locator("#other_details").fill("Explain other choice")
+
+    def then_i_see_the_clinics_page(self):
+        expect(self.page).to_have_url(
+            re.compile(reverse("clinics:index"))
+        )
+
+    def and_the_appointment_is_updated(self):
+        self.appointment.refresh_from_db()
+        self.assertEqual(self.appointment.status, Appointment.Status.ATTENDED_NOT_SCREENED)

@@ -75,7 +75,7 @@ def format_age(value: int) -> str:
 
 
 def environment(**options):
-    env = Environment(**options)
+    env = Environment(**options, extensions=["jinja2.ext.do"])
     if env.loader:
         env.loader = ChoiceLoader([PackageLoader("nhsuk_frontend_jinja"), env.loader])
 
