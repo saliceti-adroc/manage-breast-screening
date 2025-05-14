@@ -1,7 +1,7 @@
 {% extends "wizard_step.jinja" %}
-{% from 'components/checkboxes/macro.jinja' import checkboxes %}
-{% from 'components/input/macro.jinja' import input %}
-{% from 'components/radios/macro.jinja' import radios %}
+{% from "components/checkboxes/macro.jinja" import checkboxes %}
+{% from "components/input/macro.jinja" import input %}
+{% from "components/radios/macro.jinja" import radios %}
 
 {% set title = "Appointment cannot go ahead" %}
 {% set caption = participant.full_name %}
@@ -10,17 +10,17 @@
 {% macro conditionalCheckboxInput(params) %}
   {% set details_field_name = params.field_name + "_details" %}
   {% set input_params = {
-    'label': {
-      'text': "Provide details"
+    "label": {
+      "text": "Provide details"
     },
-    'id': details_field_name,
-    'name': details_field_name,
-    'value': params.details_value
+    "id": details_field_name,
+    "name": details_field_name,
+    "value": params.details_value
   } %}
   {% if form[details_field_name].errors %}
     {% set error_params = {
-      'errorMessage': {
-        'text': form[details_field_name].errors | first
+      "errorMessage": {
+        "text": form[details_field_name].errors | first
       }
     } %}
     {% set input_params = dict(input_params, **error_params) %}
@@ -33,37 +33,37 @@
 
 {% for field_name, label in form.stopped_reasons.field.choices %}
     {% do checkboxItems.append({
-      'text': label,
-      'value': field_name,
-      'checked': field_name in (form.stopped_reasons.value() or []),
-      'conditional': {
-        'html': conditionalCheckboxInput({
-          'field_name': field_name,
-          'details_value': form[field_name + '_details'].value()
+      "text": label,
+      "value": field_name,
+      "checked": field_name in (form.stopped_reasons.value() or []),
+      "conditional": {
+        "html": conditionalCheckboxInput({
+          "field_name": field_name,
+          "details_value": form[field_name + "_details"].value()
         })
       }
     }) %}
 {% endfor %}
 
 {% set checkbox_params = {
-  'idPrefix': 'stopped_reasons',
-  'name': 'stopped_reasons',
-  'fieldset': {
-    'legend': {
-      'text': 'Why has this appointment been stopped?',
-      'classes': 'nhsuk-fieldset__legend--m',
-      'isPageHeading': False
+  "idPrefix": "stopped_reasons",
+  "name": "stopped_reasons",
+  "fieldset": {
+    "legend": {
+      "text": "Why has this appointment been stopped?",
+      "classes": "nhsuk-fieldset__legend--m",
+      "isPageHeading": False
     }
   },
-  'hint': {
-    'text': 'Select all that apply'
+  "hint": {
+    "text": "Select all that apply"
   },
-  'items': checkboxItems,
+  "items": checkboxItems,
 } %}
 {% if form.stopped_reasons.errors %}
   {% set error_params = {
-    'errorMessage': {
-      'text': form.stopped_reasons.errors | first
+    "errorMessage": {
+      "text": form.stopped_reasons.errors | first
     }
   } %}
   {% set checkbox_params = dict(checkbox_params, **error_params) %}
