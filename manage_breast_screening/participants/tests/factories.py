@@ -2,6 +2,7 @@ from datetime import date
 
 from factory.declarations import SubFactory
 from factory.django import DjangoModelFactory
+from factory.fuzzy import FuzzyChoice
 
 from .. import models
 
@@ -17,7 +18,9 @@ class ParticipantFactory(DjangoModelFactory):
     phone = "07700900829"
     email = "janet.williams@example.com"
     date_of_birth = date(1959, 7, 22)
-    ethnicity = ""
+    ethnic_group = FuzzyChoice(
+        models.Participant.ETHNIC_GROUP_CHOICES, getter=lambda c: c[0]
+    )
     risk_level = "Routine"
     extra_needs = []
 

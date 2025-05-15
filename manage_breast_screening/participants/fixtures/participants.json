@@ -12,7 +12,7 @@
       "phone": "07700900829",
       "email": "oscar_adams@example.com",
       "date_of_birth": "1959-07-22",
-      "ethnicity": "",
+      "ethnic_group": null,
       "risk_level": "Routine",
       "extra_needs": [
         "Wheelchair user"
@@ -32,7 +32,7 @@
       "phone": "01184960245",
       "email": "demetrius97@example.com",
       "date_of_birth": "1964-03-15",
-      "ethnicity": "",
+      "ethnic_group": "English, Welsh, Scottish, Northern Irish or British",
       "risk_level": "Routine",
       "extra_needs": []
     }
@@ -50,7 +50,7 @@
       "phone": "018654960396",
       "email": "adonis68@example.com",
       "date_of_birth": "1958-06-18",
-      "ethnicity": "",
+      "ethnic_group": null,
       "risk_level": "Routine",
       "extra_needs": []
     }
@@ -68,7 +68,7 @@
       "phone": "07700900832",
       "email": "liam23@example.com",
       "date_of_birth": "1977-09-15",
-      "ethnicity": "Asian or Asian British, Indian",
+      "ethnic_group": "Indian",
       "risk_level": "Moderate",
       "extra_needs": []
     }
@@ -86,7 +86,7 @@
       "phone": "01184960787",
       "email": "evie_rippin72@example.com",
       "date_of_birth": "1958-04-23",
-      "ethnicity": "",
+      "ethnic_group": null,
       "risk_level": "Routine",
       "extra_needs": []
     }

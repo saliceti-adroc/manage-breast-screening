@@ -5,7 +5,21 @@
   <span class="nhsuk-hint">({{ participant.age() | formatAge }})</span>
 {% endset %}
 
-{% set ethnicityHtml %}{{ participant.ethnicity | default('Not provided') }} {% endset %}
+{% set ethnicGroup = participant.ethnic_group  %}
+{% set ethnicGroupCategory = participant.ethnic_group_category() %}
+{% set ethnicityDetailsLink %}
+  <a href="#" class="nhsuk-link">Enter ethnicity details</a>
+{% endset %}
+
+{% set ethnicityHtml %}
+  {% if ethnicGroup == "Prefer not to say" %}
+    {{ ethnicGroup }}
+  {% elif ethnicGroup %}
+    {{ ethnicGroupCategory }} ({{ ethnicGroup | replace('Any other', 'any other') }})
+  {% else %}
+    {{ ethnicityDetailsLink | safe }}
+  {% endif %}
+{% endset %}
 
 {% set addressHtml %}
   {% if participant.address %}
