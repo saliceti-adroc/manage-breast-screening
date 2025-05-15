@@ -1,4 +1,5 @@
 import re
+import pytest
 from django.urls import reverse
 from playwright.sync_api import expect
 
@@ -7,9 +8,9 @@ from manage_breast_screening.clinics.tests.factories import AppointmentFactory, 
 from manage_breast_screening.participants.tests.factories import ParticipantFactory
 from manage_breast_screening.clinics.models import Appointment
 
-class UserSubmitsCannotGoAheadForm(SystemTestCase):
-    def setUp(self):
-        super().setUp()
+class TestUserSubmitsCannotGoAheadForm(SystemTestCase):
+    @pytest.fixture(autouse=True)
+    def before(self):
         self.participant = ParticipantFactory()
         self.screening_episode = ScreeningEpisodeFactory(participant=self.participant)
         self.appointment = AppointmentFactory(screening_episode=self.screening_episode)
