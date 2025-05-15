@@ -1,6 +1,6 @@
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 import os
-from playwright.sync_api import sync_playwright, expect
+from playwright.sync_api import sync_playwright
 
 class SystemTestCase(StaticLiveServerTestCase):
     @classmethod
