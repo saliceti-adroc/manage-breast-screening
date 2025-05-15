@@ -1,5 +1,3 @@
-
-
 include scripts/shared.mk
 
 clean:: _clean-docker  # Clean-up project resources (main) @Operations
@@ -19,6 +17,7 @@ dependencies: # Install dependencies needed to build and test the project @Pipel
 
 assets: # Compile assets @Pipeline
 	npm run compile
+	poetry run playwright install
 
 build: # Build the project artefact @Pipeline
 	docker build -t "app:$$(git rev-parse HEAD)" .

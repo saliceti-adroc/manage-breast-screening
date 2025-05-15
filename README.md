@@ -42,6 +42,8 @@ To run all the tests:
 make test
 ```
 
+Running `make config` beforehand will ensure you have necessary dependencies installed, including the browser needed by playwright for system tests.
+
 ### Dependency management
 Python dependencies are managed via [poetry](https://python-poetry.org/docs/basic-usage/).
 
