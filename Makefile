@@ -4,11 +4,20 @@ include scripts/shared.mk
 
 clean:: _clean-docker  # Clean-up project resources (main) @Operations
 
-config: manage_breast_screening/config/.env _install-dependencies githooks-config _install-poetry db migrate seed  # Configure development environment (main) @Configuration
+# Configure development environment (main) @Configuration
+config: manage_breast_screening/config/.env \
+	_install-tools \
+	_install-poetry \
+	githooks-config \
+	dependencies \
+	assets \
+	db migrate seed
 
 dependencies: # Install dependencies needed to build and test the project @Pipeline
 	poetry install
 	npm install
+
+assets: # Compile assets @Pipeline
 	npm run compile
 
 build: # Build the project artefact @Pipeline
@@ -54,7 +63,7 @@ rebuild-db: _clean-docker db migrate seed  # Create a fresh development database
 migrate:  # Run migrations
 	poetry run ./manage.py migrate
 
-seed:  # load seed data
+seed:  # Load seed data
 	poetry run ./manage.py loaddata clinics participants
 
 _install-poetry:

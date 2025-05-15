@@ -1,13 +1,13 @@
 # Shared functionality based on https://github.com/NHSDigital/repository-template/blob/main/scripts/init.mk
 
-_install-dependency: # Install asdf dependency - mandatory: name=[listed in the '.tool-versions' file]; optional: version=[if not listed]
+_install-tool: # Install asdf dependency - mandatory: name=[listed in the '.tool-versions' file]; optional: version=[if not listed]
 	echo ${name}
 	asdf plugin add ${name} ||:
 	asdf install ${name} $(or ${version},)
 
-_install-dependencies: # Install all the dependencies listed in .tool-versions
+_install-tools: # Install all the tools listed in .tool-versions
 	for plugin in $$(grep ^[a-z] .tool-versions | sed 's/[[:space:]].*//'); do \
-		make _install-dependency name="$${plugin}" ; \
+		make _install-tool name="$${plugin}" ; \
 	done
 
 # This script parses all the make target descriptions and renders the help output.
@@ -59,7 +59,7 @@ HELP_SCRIPT = \
 		} \
 	}
 
-.PHONY: _install-dependency _install-dependencies
+.PHONY: _install-tool _install-tools
 .ONESHELL:
 MAKEFLAGS := --no-print-directory
 SHELL := /bin/bash
