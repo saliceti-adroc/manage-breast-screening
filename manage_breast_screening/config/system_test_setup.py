@@ -18,6 +18,7 @@ class SystemTestCase(StaticLiveServerTestCase):
 
     def setUp(self):
         self.page = self.browser.new_page()
+        self.page.set_default_timeout(5000)
 
     def tearDown(self):
         self.page.close()
