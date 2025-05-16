@@ -1,5 +1,5 @@
 .app-count {
-  @include nhsuk-typography-responsive(16);
+  @include nhsuk-font-size(16);
 
   & {
     background-color: rgba($color_nhsuk-grey-4, 0.5);
