@@ -1,140 +1,49 @@
-{% from 'components/header/macro.jinja' import header %}
-{% from 'components/footer/macro.jinja' import footer %}
-{% from 'components/skip-link/macro.jinja' import skipLink %}
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
+{% from 'header/macro.jinja' import header %}
+{% set assetPath = STATIC_URL ~ "/assets" %}
+{% extends "template.jinja" %}
 
-    <title>{% block pageTitle %}Manage breast screening{% endblock %}</title>
+{% block head %}
+  <link rel="stylesheet" href="{{ static('css/main.css' )}}">
+  <script type="module" src="{{ static('js/bundle.js' )}}"></script>
+{% endblock %}
 
-    <link rel="preload" as="font" href="https://assets.nhs.uk/fonts/FrutigerLTW01-55Roman.woff2" type="font/woff2"
-      crossorigin>
-    <link rel="preload" as="font" href="https://assets.nhs.uk/fonts/FrutigerLTW01-65Bold.woff2" type="font/woff2"
-      crossorigin>
-    <link rel="preconnect  dns-prefetch" href="https://www.nhs.uk/">
-    <link rel="preconnect  dns-prefetch" href="https://assets.nhs.uk/" crossorigin>
-
-    <link rel="stylesheet" href="{{ static('css/main.css' )}}">
-    <script type="module" src="{{ static('js/bundle.js' )}}"></script>
-
-    <link rel="shortcut icon" href="{{ static('assets/favicons/favicon.ico' )}}" type="image/x-icon">
-    <link rel="apple-touch-icon" href="{{ static('assets/favicons/apple-touch-icon-180x180.png' )}}">
-    <link rel="mask-icon" href="{{ static('assets/favicons/favicon.svg' )}}" color="#005eb8">
-    <link rel="icon" sizes="192x192" href="{{ static('assets/favicons/favicon-192x192.png' )}}">
-    <meta name="msapplication-TileImage" content="{{ static('assets/favicons/mediumtile-144x144.png' )}}">
-    <meta name="msapplication-TileColor" content="#005eb8">
-    <meta name="msapplication-square70x70logo" content="{{ static('assets/favicons/smalltile-70x70.png' )}}">
-    <meta name="msapplication-square150x150logo" content="{{ static('assets/favicons/mediumtile-150x150.png' )}}">
-    <meta name="msapplication-wide310x150logo" content="{{ static('assets/favicons/widetile-310x150.png' )}}">
-    <meta name="msapplication-square310x310logo" content="{{ static('assets/favicons/largetile-310x310.png' )}}">
-    {% block head %}{% endblock %}
-  </head>
-
-  <body>
-  <script>document.body.className = ((document.body.className) ? document.body.className + ' js-enabled' : 'js-enabled');</script>
-  {% block bodyStart %}{% endblock %}
-
-  {% block skipLink %}
-    {{ skipLink({
-      "href": '#maincontent',
-      "text": 'Skip to main content'
-    }) }}
-  {% endblock %}
-
-  {% block header %}
-    {{ header({
-      "showNav": "true",
-      "service": {
-        "name": "Manage breast screening"
+{% block header %}
+  {{ header({
+    "showNav": "true",
+    "service": {
+      "name": "Manage breast screening"
+    },
+    "primaryLinks": [
+      {
+        "url": "#",
+        "label": "Home",
+        "current": true if navActive == "home"
       },
-      "primaryLinks": [
-        {
-          "url": "#",
-          "label": "Home",
-          "current": true if navActive == "home"
-        },
-        {
-          "url": "/clinics/",
-          "label": "Clinics",
-          'current': true if navActive == "clinics"
-        },
-        {
-          "url": "#",
-          "label": "Image reading",
-          "current": true if navActive == "reading"
-        },
-        {
-          "url": "#",
-          "label": "Participants",
-          "current": true if navActive == "participants"
-        },
-        {
-          "url": "#",
-          "label": "Messages",
-          "current": true if navActive == "messages"
-        }, {
-          "url": "#",
-          "label": "Help and support",
-          "current": true if navActive == "help"
-        }
-      ]
-    }) }}
-  {% endblock %}
+      {
+        "url": "/clinics/",
+        "label": "Clinics",
+        'current': true if navActive == "clinics"
+      }
+    ]
+  }) }}
+{% endblock %}
 
-  {% block main %}
-    <div class="nhsuk-width-container {{ containerClasses }}">
-      {% block beforeContent %}{% endblock %}
-      <main class="nhsuk-main-wrapper {{ mainClasses }}" id="maincontent" role="main">
-        {% block content %}
-        <div class="nhsuk-grid-row">
-          <div class="nhsuk-grid-column-two-thirds">
-            {% block messages %}
-              {#- TODO: show messages from django.contrib.messages -#}
-            {% endblock messages %}
-          </div>
-        </div>
-
-        <div class="nhsuk-grid-row">
-          <div class="nhsuk-grid-column-full">
-            {% block pageNavigation %}
-            {% endblock pageNavigation %}
-          </div>
-        </div>
-
-        {% block pageContent %}
-        {% endblock pageContent %}
-        {% endblock content %}
-      </main>
+{% block content %}
+  <div class="nhsuk-grid-row">
+    <div class="nhsuk-grid-column-two-thirds">
+      {% block messages %}
+        {#- TODO: show messages from django.contrib.messages -#}
+      {% endblock messages %}
     </div>
-  {% endblock %}
+  </div>
 
-  {% block footer %}
-    {{ footer({
-      "links": [
-        {
-          "URL": "/",
-          "label": "Home"
-        },
-        {
-          "URL": "/settings",
-          "label": "Settings"
-        },
-        {
-          "URL": "/clear-data",
-          "label": "Clear data"
-        },
-        {
-          "URL": "https://github.com/NHSDigital/manage-screening-events-prototype",
-          "label": "Github"
-        }
-      ]
-    })}}
-  {% endblock %}
+  <div class="nhsuk-grid-row">
+    <div class="nhsuk-grid-column-full">
+      {% block pageNavigation %}
+      {% endblock pageNavigation %}
+    </div>
+  </div>
 
-  {% block bodyEnd %}{% endblock %}
-  </body>
-</html>
+  {% block pageContent %}
+  {% endblock pageContent %}
+{% endblock content %}
