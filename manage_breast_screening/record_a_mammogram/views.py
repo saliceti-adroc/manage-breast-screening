@@ -196,6 +196,7 @@ def appointment_cannot_go_ahead(request, id):
             "title": "Appointment cannot go ahead",
             "caption": participant.full_name,
             "form": form,
+            "decision_legend": "Does the appointment need to be rescheduled?",
         },
     )
 
