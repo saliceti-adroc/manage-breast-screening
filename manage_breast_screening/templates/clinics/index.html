@@ -71,8 +71,8 @@ All clinics this week
           ({{ clinic.session_type() | capitalize }})
         </a>
       </td>
-      <td>{{ clinic.starts_at | formatDate | noWrap }}<br>
-        {{clinic.time_range() | formatTimeRange | asHint }}
+      <td>{{ clinic.starts_at | format_date | noWrap }}<br>
+        {{clinic.time_range() | format_time_range | as_hint }}
       </td>
       <td>
         {{ clinic.get_type_display() | capitalize }}

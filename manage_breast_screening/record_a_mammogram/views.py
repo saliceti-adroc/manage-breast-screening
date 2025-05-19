@@ -14,6 +14,7 @@ from .forms import (
     RecordMedicalInformationForm,
     ScreeningAppointmentForm,
 )
+from .presenters import AppointmentPresenter, present_secondary_nav
 
 Status = Appointment.Status
 
@@ -52,34 +53,23 @@ class StartScreening(FormView):
         context = super().get_context_data(**kwargs)
 
         appointment = self.get_appointment()
+        presenter = AppointmentPresenter(appointment)
 
-        context["appointment"] = appointment
-        context["clinic_slot"] = appointment.clinic_slot
-        context["participant"] = appointment.screening_episode.participant
-
-        context["status"] = {
-            "colour": status_color(appointment.status),
-            "text": appointment.get_status_display(),
-            "key": appointment.status,
-        }
-        context["Status"] = Status
+        context.update(
+            {
+                "appointment": presenter,
+                "caption": presenter.clinic_slot.clinic_type + " appointment",
+                "title": presenter.participant.full_name,
+                "decision_legend": "Can the appointment go ahead?",
+                "decision_hint": "Before you proceed, check the participant’s identity and confirm that their last mammogram was more than 6 months ago.",
+            }
+        )
 
         if appointment.status in [
             appointment.Status.SCREENED,
             appointment.Status.PARTIALLY_SCREENED,
         ]:
-            context["secondary_nav_items"] = build_secondary_nav(appointment.pk)
-
-        last_known_screening = appointment.screening_episode.previous()
-
-        # TODO: the current model doesn't allow for knowing the type and location of a historical screening
-        # if it is not tied to one of our clinic slots, so we can't easily populate historical
-        # screening episodes at the moment.
-        context["last_known_screening"] = (
-            {"date": last_known_screening.created_at, "location": None, "type": None}
-            if last_known_screening
-            else {}
-        )
+            context["secondary_nav_items"] = present_secondary_nav(appointment.pk)
 
         return context
 
@@ -171,19 +161,3 @@ def check_in(request, id):
     appointment.save()
 
     return redirect("record_a_mammogram:start_screening", id=id)
-
-
-def build_secondary_nav(id):
-    """
-    Build a secondary nav for reviewing the information of screened/partially screened appointments.
-    """
-    return [
-        {
-            "id": "all",
-            "text": "Appointment details",
-            "href": reverse("record_a_mammogram:start_screening", kwargs={"id": id}),
-            "current": True,
-        },
-        {"id": "medical_information", "text": "Medical information", "href": "#"},
-        {"id": "images", "text": "Images", "href": "#"},
-    ]

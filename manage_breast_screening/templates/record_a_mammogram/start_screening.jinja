@@ -1,15 +1,10 @@
 {% extends "wizard_step.jinja" %}
 {% from 'card/macro.jinja' import card %}
 {% from 'warning-callout/macro.jinja' import warningCallout %}
-{% from '_components/appointment-status/macro.jinja' import appointmentStatus %}
-{% from '_components/appointment-header/macro.jinja' import appointmentHeader %}
-{% from '_components/participant-details/macro.jinja' import participantDetails %}
+{% from '_components/appointment-status/macro.jinja' import appointment_status %}
+{% from '_components/appointment-header/macro.jinja' import appointment_header %}
+{% from '_components/participant-details/macro.jinja' import participant_details %}
 {% from '_components/secondary-navigation/macro.jinja' import appSecondaryNavigation %}
-
-{% set caption = clinic_slot.clinic.get_type_display() | capitalize ~ " appointment" %}
-{% set title = participant.first_name ~ " " ~ participant.last_name %}
-{% set decision_legend = "Can the appointment go ahead?" %}
-{% set decision_hint = "Before you proceed, check the participant’s identity and confirm that their last mammogram was more than 6 months ago." %}
 
 {% block heading %}
   <div class="app-header-with-status">
@@ -21,18 +16,15 @@
     </h1>
 
     <div class="app-header-with-status__status-tag">
-      {{ appointmentStatus({
-        "clinicId": clinic.id,
-        "id": appointment.id,
-        "status": status,
-        "allStatuses": Status,
-        "csrfInput": csrf_input
-      })}}
+      {{ appointment_status(
+        appointment=appointment,
+        csrf_input=csrf_input
+      )}}
     </div>
 {% endblock %}
 
 {% block stepContent %}
-  {{ appointmentHeader(appointment) }}
+  {{ appointment_header(appointment) }}
 
   {% if secondary_nav_items %}
     {{ appSecondaryNavigation({
@@ -41,7 +33,7 @@
     }) }}
   {% endif %}
 
-  {% set specialAppointmentHtml %}
+  {% set special_appointment_html %}
     {% if participant.extra_needs | length > 1 %}
       <ul>
         {% for need in participant.extra_needs %}
@@ -57,13 +49,13 @@
   {% if participant.extra_needs %}
     {{ warningCallout({
       "heading": "Special appointment",
-      "HTML": specialAppointmentHtml
+      "HTML": special_appointment_html
     }) }}
   {% endif %}
 
   {{ card({
     "headingHtml": " ",
     "headingLevel": "2",
-    "descriptionHtml": participantDetails(participant=participant, lastKnownScreening=last_known_screening)
+    "descriptionHtml": participant_details(participant=appointment.participant, last_known_screening=appointment.last_known_screening)
   }) }}
 {% endblock %}
