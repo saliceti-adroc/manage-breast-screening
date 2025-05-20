@@ -2,7 +2,7 @@ import os
 
 import pytest
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
-from playwright.sync_api import sync_playwright
+from playwright.sync_api import sync_playwright, expect
 
 
 @pytest.mark.system
@@ -26,3 +26,12 @@ class SystemTestCase(StaticLiveServerTestCase):
 
     def tearDown(self):
         self.page.close()
+
+    def expect_validation_error(self, id: str, fieldset_legend: str, error_text: str):
+        summary_box = self.page.locator(".nhsuk-error-summary")
+        error_link = summary_box.locator(f"a[href='#{id}']")
+        expect(error_link).to_have_text(error_text)
+
+        fieldset = self.page.locator('fieldset').filter(has_text=fieldset_legend)
+        error_span = fieldset.locator("span").filter(has_text=error_text)
+        expect(error_span).to_have_id(id)

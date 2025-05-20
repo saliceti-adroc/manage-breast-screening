@@ -43,9 +43,16 @@ class TestUserSubmitsCannotGoAheadForm(SystemTestCase):
         self.page.get_by_role("button", name="Continue").click()
 
     def then_i_should_see_validation_errors(self):
-        expect(
-            self.page.locator("#stopped_reasons-error")
-        ).to_have_text(re.compile("A reason for why this appointment cannot continue must be provided"))
+        self.expect_validation_error(
+            id="stopped_reasons-error",
+            fieldset_legend="Why has this appointment been stopped?",
+            error_text="A reason for why this appointment cannot continue must be provided",
+        )
+        self.expect_validation_error(
+            id="decision-error",
+            fieldset_legend="Does the appointment need to be rescheduled?",
+            error_text="Select whether the participant needs to be invited for another appointment"
+        )
 
     def when_i_select_a_reason_for_the_appointment_being_stopped(self):
         self.page.get_by_label("Failed identity check").check()
@@ -58,9 +65,11 @@ class TestUserSubmitsCannotGoAheadForm(SystemTestCase):
         expect(self.page.get_by_label("Yes, add participant to reinvite list")).to_be_checked()
 
     def then_i_see_an_error_for_other_details(self):
-        expect(
-            self.page.locator("#other_details-error")
-        ).to_have_text(re.compile("Explain why this appointment cannot proceed"))
+        self.expect_validation_error(
+            id="other_details-error",
+            fieldset_legend="Why has this appointment been stopped?",
+            error_text="Explain why this appointment cannot proceed",
+        )
 
     def when_i_fill_in_other_details(self):
         self.page.locator("#other_details").fill("Explain other choice")
