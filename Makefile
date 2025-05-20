@@ -67,6 +67,9 @@ migrate:  # Run migrations
 seed:  # Load seed data
 	poetry run ./manage.py loaddata clinics participants
 
+models:
+	poetry run ./manage.py shell -c "from django.apps import apps; print('\n'.join(f'{m._meta.app_label}.{m.__name__}' for m in apps.get_models()))"
+
 _install-poetry:
 	if ! command -v poetry >/dev/null 2>&1; then \
 		pip install poetry; \
