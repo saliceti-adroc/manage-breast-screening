@@ -1,7 +1,7 @@
 /**
  * @type {ESLint.ConfigData}
  */
-module.exports = {
+export default {
   overrides: [
     {
       files: ['**/*.{cjs,js,mjs}'],
