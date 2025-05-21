@@ -1,33 +1,47 @@
+import { getByRole } from '@testing-library/dom'
+import { userEvent } from '@testing-library/user-event'
+
 import { init } from './ajax-submit.js'
 
 describe('AJAX submit', () => {
-  const html = `
-    <div class="app-ajax-submit" data-module="app-ajax-submit">
-      <div id="old-message" data-hide-on-submit>Not submitted</div>
-      <div id="message" hidden data-show-on-submit>Submitted</div>
-      <form id="form" data-success="container" method="post" action="/example">
-        <button>Submit</button>
-      </form>
-    </div>
-  `
+  const user = userEvent.setup()
 
+  /** @type {HTMLFormElement} */
   let form
+
+  /** @type {HTMLButtonElement} */
+  let button
+
+  /** @type {HTMLDivElement} */
   let oldMessage
+
+  /** @type {HTMLDivElement} */
   let message
 
   beforeEach(() => {
-    document.body.innerHTML = html
-    form = document.getElementById('form')
-    oldMessage = document.getElementById('old-message')
-    message = document.getElementById('message')
+    document.body.innerHTML = `
+      <div class="app-ajax-submit" data-module="app-ajax-submit">
+        <div data-hide-on-submit>Not submitted</div>
+        <div data-show-on-submit hidden>Submitted</div>
+        <form method="post" action="/example" data-success="container" novalidate>
+          <button>Submit</button>
+        </form>
+      </div>
+    `
+
+    const $container = document.querySelector('[data-module="app-ajax-submit"]')
+
+    form = $container.querySelector('form')
+    button = getByRole(form, 'button', { name: 'Submit' })
+    oldMessage = $container.querySelector('[data-hide-on-submit]')
+    message = $container.querySelector('[data-show-on-submit]')
   })
 
   it('swaps the form for a success message', async () => {
     mockFetch({ ok: true, status: 200 })
     init()
 
-    form.dispatchEvent(new Event('submit'))
-    await new Promise(process.nextTick)
+    await user.click(button)
 
     expect(form).toHaveAttribute('hidden')
     expect(oldMessage).toHaveAttribute('hidden')
@@ -38,8 +52,7 @@ describe('AJAX submit', () => {
     mockFetch({ ok: false, status: 500 })
     init()
 
-    form.dispatchEvent(new Event('submit'))
-    await new Promise(process.nextTick)
+    await user.click(button)
 
     expect(location.reload).toHaveBeenCalled()
     expect(message).toHaveAttribute('hidden')
@@ -50,8 +63,7 @@ describe('AJAX submit', () => {
     mockFetchRejected(new Error('something went wrong'))
     init()
 
-    form.dispatchEvent(new Event('submit'))
-    await new Promise(process.nextTick)
+    await user.click(button)
 
     expect(location.reload).toHaveBeenCalled()
     expect(message).toHaveAttribute('hidden')
