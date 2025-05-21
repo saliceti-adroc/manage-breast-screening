@@ -38,16 +38,25 @@ def status_color(status):
             return "blue"  # default blue
 
 
-class StartScreening(FormView):
-    template_name = "record_a_mammogram/start_screening.jinja"
-    form_class = ScreeningAppointmentForm
+class BaseAppointmentForm(FormView):
+    @property
+    def appointment_id(self):
+        return self.kwargs["id"]
 
     def get_appointment(self):
-        id = self.kwargs["id"]
+        return get_object_or_404(
+            Appointment.objects.prefetch_related(
+                "clinic_slot",
+                "screening_episode__participant",
+                "screening_episode__participant__address",
+            ),
+            pk=self.appointment_id,
+        )
 
-        return Appointment.objects.prefetch_related(
-            "clinic_slot", "screening_episode__participant"
-        ).get(pk=id)
+
+class StartScreening(BaseAppointmentForm):
+    template_name = "record_a_mammogram/start_screening.jinja"
+    form_class = ScreeningAppointmentForm
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -88,14 +97,9 @@ class StartScreening(FormView):
             )
 
 
-class AskForMedicalInformation(FormView):
+class AskForMedicalInformation(BaseAppointmentForm):
     template_name = "record_a_mammogram/ask_for_medical_information.jinja"
     form_class = AskForMedicalInformationForm
-
-    def get_appointment(self):
-        id = self.kwargs["id"]
-
-        return Appointment.objects.get(pk=id)
 
     def form_valid(self, form):
         form.save()
@@ -110,14 +114,9 @@ class AskForMedicalInformation(FormView):
             return redirect("record_a_mammogram:awaiting_images", id=appointment.pk)
 
 
-class RecordMedicalInformation(FormView):
+class RecordMedicalInformation(BaseAppointmentForm):
     template_name = "record_a_mammogram/record_medical_information.jinja"
     form_class = RecordMedicalInformationForm
-
-    def get_appointment(self):
-        id = self.kwargs["id"]
-
-        return Appointment.objects.get(pk=id)
 
     def form_valid(self, form):
         form.save()
@@ -133,7 +132,7 @@ class RecordMedicalInformation(FormView):
 
 
 def appointment_cannot_go_ahead(request, id):
-    appointment = Appointment.objects.get(pk=id)
+    appointment = get_object_or_404(Appointment, pk=id)
     participant = appointment.screening_episode.participant
     if request.method == "POST":
         form = AppointmentCannotGoAheadForm(request.POST, instance=appointment)
