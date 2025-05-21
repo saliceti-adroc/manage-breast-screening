@@ -1,4 +1,5 @@
 from datetime import date
+from enum import StrEnum
 
 from django.db import models
 
@@ -20,7 +21,27 @@ class Setting(BaseModel):
     provider = models.ForeignKey(Provider, on_delete=models.CASCADE)
 
 
+class ClinicFilter(StrEnum):
+    TODAY = "today"
+    UPCOMING = "upcoming"
+    COMPLETED = "completed"
+    ALL = "all"
+
+
 class ClinicQuerySet(models.QuerySet):
+    def by_filter(self, filter: str):
+        match filter:
+            case ClinicFilter.TODAY:
+                return self.today()
+            case ClinicFilter.UPCOMING:
+                return self.upcoming()
+            case ClinicFilter.COMPLETED:
+                return self.completed()
+            case ClinicFilter.ALL:
+                return self
+            case _:
+                raise ValueError(filter)
+
     def today(self):
         """
         Clinics that start today
@@ -100,6 +121,15 @@ class Clinic(BaseModel):
     def time_range(self):
         return {"start_time": self.starts_at, "end_time": self.ends_at}
 
+    @classmethod
+    def filter_counts(cls):
+        return {
+            ClinicFilter.ALL: cls.objects.count(),
+            ClinicFilter.TODAY: cls.objects.today().count(),
+            ClinicFilter.UPCOMING: cls.objects.upcoming().count(),
+            ClinicFilter.COMPLETED: cls.objects.completed().count(),
+        }
+
 
 class ClinicSlot(BaseModel):
     clinic = models.ForeignKey(
@@ -164,4 +194,3 @@ class Appointment(BaseModel):
     )
     reinvite = models.BooleanField(default=False)
     stopped_reasons = models.JSONField(null=True, blank=True)
-

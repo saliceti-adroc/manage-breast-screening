@@ -1,9 +1,8 @@
 {% set clinic_slot = appointment.clinic_slot %}
-{% set clinic = clinic_slot.clinic %}
-{% set participant = appointment.screening_episode.participant %}
+{% set participant = appointment.participant %}
 
-<p class="app-text-grey"><span>NHS Number: {{ participant.nhs_number | formatNhsNumber }}</span></p>
+<p class="app-text-grey"><span>NHS Number: {{ participant.nhs_number }}</span></p>
 
-<p>{{ clinic_slot.starts_at | formatTimeString }} ({{ clinic_slot.duration_in_minutes }} minutes) - {{ clinic.starts_at | formatDate }} ({{ clinic.starts_at | formatRelativeDate }})<span class="nhsuk-u-margin-left-3"><a href="#">Reschedule appointment</a></span></p>
+<p>{{ clinic_slot.slot_time_and_clinic_date }}<span class="nhsuk-u-margin-left-3"><a href="#">Reschedule appointment</a></span></p>
 
 <p class="nhsuk-u-margin-bottom-4"><a href="#">View participant record</a></p>

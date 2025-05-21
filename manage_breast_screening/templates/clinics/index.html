@@ -4,44 +4,32 @@
 {% from '_components/count/macro.jinja' import appCount %}
 {% from '_components/secondary-navigation/macro.jinja' import appSecondaryNavigation %}
 
-{% set pageHeading %}
-{% if filter == 'today' %}
-Today’s clinics
-{% elif filter == 'upcoming' %}
-Upcoming clinics
-{% elif filter == 'completed' %}
-Completed clinics this week
-{% else %}
-All clinics this week
-{% endif %}
-{% endset %}
-
 {% block content %}
-<h1>{{pageHeading}}</h1>
+<h1>{{ presenter.heading }}</h1>
 
 {% set ns = namespace() %}
 {% set ns.secondaryNavItems = [] %}
 
 {% for item in [
-{ "id": 'today', "label": 'Today' },
-{ "id": 'upcoming', "label": 'Upcoming' },
-{ "id": 'completed', "label": 'Completed' },
-{ "id": 'all', "label": 'All' }
+  { "id": 'today', "label": 'Today' },
+  { "id": 'upcoming', "label": 'Upcoming' },
+  { "id": 'completed', "label": 'Completed' },
+  { "id": 'all', "label": 'All' }
 ] %}
 {% set href %}/clinics/{{ item.id }}{% endset %}
 {% set ns.secondaryNavItems = ns.secondaryNavItems + [{
-"text": (item.label + " " + appCount(filteredClinicCounts[item.id])) | safe,
-"href": href | trim,
-"current": true if item.id == filter
+  "text": (item.label + " " + appCount(presenter.counts_by_filter[item.id])) | safe,
+  "href": href | trim,
+  "current": true if item.id == presenter.filter
 }] %}
 {% endfor %}
 
 {{ appSecondaryNavigation({
-"visuallyHiddenTitle": "Secondary menu",
-"items": ns.secondaryNavItems
+  "visuallyHiddenTitle": "Secondary menu",
+  "items": ns.secondaryNavItems
 }) }}
 
-{% if filteredClinics | length == 0 %}
+{% if presenter.clinics | length == 0 %}
 <p>No clinics found.</p>
 {% else %}
 <table class="nhsuk-table">
@@ -55,39 +43,31 @@ All clinics this week
     </tr>
   </thead>
   <tbody class="nhsuk-table__body">
-    {% for clinic in filteredClinics | sort(false, false, 'starts_at') %}
-    {% set location = clinic.setting %}
-    {% set events = clinic.slots %}
+    {% for clinic in presenter.clinics %}
     <tr>
       <td>
         <a href="/clinics/{{ clinic.id }}" class="nhsuk-link">
-          {#- FIXME-#}
-          {% if location.type == 'mobile_unit' %}
-          {{ location.name }} at {{ clinic.siteName }}
-          {% else %}
-          {{ location.name }}
-          {% endif %}
+          {{ clinic.location_name }}
           <br>
-          ({{ clinic.session_type() | capitalize }})
+          ({{ clinic.session_type }})
         </a>
       </td>
-      <td>{{ clinic.starts_at | formatDate | noWrap }}<br>
-        {{clinic.time_range() | formatTimeRange | asHint }}
+      <td>{{ clinic.starts_at | no_wrap }}<br>
+        {{clinic.time_range | as_hint }}
       </td>
       <td>
-        {{ clinic.get_type_display() | capitalize }}
+        {{ clinic.type }}
         <br>
-        <span class="app-text-grey">{{ clinic.get_risk_type_display() | capitalize }}</span>
-
+        <span class="app-text-grey">{{ clinic.risk_type }}</span>
       </td>
 
       <td class="nhsuk-table__cell--numeric">
-        {{ events | length }}
+        {{ clinic.number_of_slots }}
       </td>
-      <td class="nhsuk-table__cell--numeric">
+      <td>
         {{ tag({
-        "html": clinic.get_state_display() | noWrap,
-        "classes": "nhsuk-tag--" + STATUS_COLORS[clinic.state]
+          "html": clinic.state.text | no_wrap,
+          "classes": clinic.state.classes
         })}}
       </td>
     </tr>

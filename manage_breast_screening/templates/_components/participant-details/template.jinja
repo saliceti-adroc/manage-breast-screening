@@ -1,27 +1,27 @@
 {% from 'components/summary-list/macro.jinja' import summaryList %}
 
 {% set dob %}
-  {{ participant.date_of_birth | formatDate }}<br>
-  <span class="nhsuk-hint">({{ participant.age() | formatAge }})</span>
+  {{ participant.date_of_birth }}<br>
+  <span class="nhsuk-hint">({{ participant.age }})</span>
 {% endset %}
 
-{% set ethnicGroup = participant.ethnic_group  %}
-{% set ethnicGroupCategory = participant.ethnic_group_category() %}
-{% set ethnicityDetailsLink %}
+{% set ethnic_group = participant.ethnic_group  %}
+{% set ethnic_group_category = participant.ethnic_group_category %}
+{% set ethnicity_details_link %}
   <a href="#" class="nhsuk-link">Enter ethnicity details</a>
 {% endset %}
 
-{% set ethnicityHtml %}
-  {% if ethnicGroup == "Prefer not to say" %}
-    {{ ethnicGroup }}
-  {% elif ethnicGroup %}
-    {{ ethnicGroupCategory }} ({{ ethnicGroup | replace('Any other', 'any other') }})
+{% set ethnicity_html %}
+  {% if ethnic_group == "Prefer not to say" %}
+    {{ ethnic_group }}
+  {% elif ethnic_group %}
+    {{ ethnic_group_category }} ({{ ethnic_group }})
   {% else %}
-    {{ ethnicityDetailsLink | safe }}
+    {{ ethnicity_details_link | safe }}
   {% endif %}
 {% endset %}
 
-{% set addressHtml %}
+{% set address_html %}
   {% if participant.address %}
     {% for line in participant.address.lines %}
       {{ line }}<br>
@@ -29,17 +29,18 @@
     {{ address.postcode }}
   {% endif %}
 {% endset %}
-{% set addressHtml = addressHtml | trim | default("Not provided") %}
+{% set address_html = address_html | trim | default("Not provided") %}
 
-{% set lastMammogramHtml %}
-  {% if lastKnownScreening %}
-    {{ lastKnownScreening.date | formatDate }} ({{ lastKnownScreening.date | formatRelativeDate | asHint }})
-    {% if lastKnownScreening.location %}
-      </br>{{ lastKnownScreening.location }}
-      {% if lastKnownScreening.type %}</br>{{ lastKnownScreening.type | sentenceCase }}{% endif %}
+{% set last_known_screening = appointment.last_known_screening %}
+{% set last_mammogram_html %}
+  {% if last_known_screening %}
+    {{ last_known_screening.date }} ({{ last_known_screening.relative_date | as_hint }})
+    {% if last_known_screening.location %}
+      </br>{{ last_known_screening.location }}
+      {% if last_known_screening.type %}</br>{{ last_known_screening.type }}{% endif %}
     {% endif %}
   {% else %}
-  {{ "Not known" | asHint }}
+  {{ "Not known" | as_hint }}
   {% endif %}
 {% endset %}
 
@@ -53,56 +54,9 @@
        "text": participant.full_name
      },
      "actions": {
-        "items": [
-          {
-            "href": "#",
-            "text": "Change",
-            "visuallyHiddenText": "date of birth"
-          } if allowEdits else []
-        ]
-      }
+       "items": [{}]
+     }
    },
-   {
-     "key": {
-       "text": "Gender"
-     },
-     "value": {
-       "text": "Female"
-     },
-     "actions": {
-        "items": [
-        ]
-     }
-   } if not isMinimalParticipant,
-   {
-     "key": {
-       "text": "NHS number"
-     },
-     "value": {
-       "text": participant.medicalInformation.nhsNumber | formatNhsNumber
-     },
-     "actions": {
-        "items": [
-        ]
-     }
-   } if not isMinimalParticipant,
-   {
-     "key": {
-       "text": "SX number"
-     },
-     "value": {
-       "text": participant.sxNumber
-     },
-     "actions": {
-        "items": [
-          {
-            "href": "#",
-            "text": "Change",
-            "visuallyHiddenText": "SX number"
-          } if allowEdits
-        ]
-      }
-   } if not isMinimalParticipant,
    {
      "key": {
        "text": "Date of birth"
@@ -111,8 +65,7 @@
        "html": dob
      },
      "actions": {
-        "items": [
-        ]
+       "items": [{}]
      }
    },
    {
@@ -120,75 +73,29 @@
        "text": "Ethnicity"
      },
      "value": {
-       "html": ethnicityHtml | safe
+       "html": ethnicity_html | safe
      },
      "actions": {
-        "items": [
-          {
-            "href": "#",
-            "text": "Change",
-            "visuallyHiddenText": "address"
-          } if false else []
-        ]
-      }
+      "items": [{}]
+     }
    },
    {
      "key": {
        "text": "Address"
      },
      "value": {
-       "html": addressHtml
+       "html": address_html
      },
      "actions": {
-        "items": [
-          {
-            "href": "#",
-            "text": "Change",
-            "visuallyHiddenText": "address"
-          } if allowEdits else []
-        ]
-      }
+       "items": [{}]
+     }
    },
-   {
-     "key": {
-       "text": "Phone"
-     },
-     "value": {
-       "text": participant.phone | formatPhoneNumber
-     },
-     "actions": {
-        "items": [
-          {
-            "href": "#",
-            "text": "Change",
-            "visuallyHiddenText": "phone"
-          } if allowEdits
-        ]
-      }
-   } if not isMinimalParticipant,
-   {
-     "key": {
-       "text": "Email"
-     },
-     "value": {
-       "text": participant.demographicInformation.email
-     },
-     "actions": {
-        "items": [
-          {
-            "href": "#",
-            "text": "Change",
-            "visuallyHiddenText": "email"
-          } if allowEdits
-        ]
-      }
-   } if not isMinimalParticipant,
    {
      "key": {
        "text": "Last known mammogram"
      },
      "value": {
-       "html": lastMammogramHtml
+       "html": last_mammogram_html
      },
      "actions": {
         "items": [
@@ -205,17 +112,11 @@
        "text": "Risk level"
      },
      "value": {
-       "html": participant.risk_level | sentenceCase
+       "html": participant.risk_level
      },
      "actions": {
-        "items": [
-          {
-            "href": "#",
-            "text": "View or update screening history",
-            "visuallyHiddenText": "email"
-          } if allowEdits else []
-        ]
-      }
+       "items": [{}]
+     }
    }
   ]
 }) }}

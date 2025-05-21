@@ -3,9 +3,6 @@
 {% from "input/macro.jinja" import input %}
 {% from "radios/macro.jinja" import radios %}
 
-{% set title = "Appointment cannot go ahead" %}
-{% set caption = participant.full_name %}
-
 {% block form %}
 {% macro conditionalCheckboxInput(params) %}
   {% set details_field_name = params.field_name + "_details" %}
