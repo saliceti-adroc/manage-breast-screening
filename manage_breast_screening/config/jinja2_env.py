@@ -6,14 +6,6 @@ from django.urls import reverse
 from jinja2 import ChoiceLoader, Environment, PackageLoader
 from markupsafe import Markup, escape
 
-from ..utils.date_formatting import (
-    format_date,
-    format_date_time,
-    format_relative_date,
-    format_time,
-    format_time_range,
-)
-
 
 def no_wrap(value):
     """
@@ -54,10 +46,7 @@ def environment(**options):
     env.globals.update(
         {"static": static, "url": reverse, "STATIC_URL": settings.STATIC_URL}
     )
+    env.filters["no_wrap"] = no_wrap
     env.filters["as_hint"] = as_hint
-
-    # TODO: format all dates and times in the presenter layer
-    env.filters["format_date"] = format_date
-    env.filters["format_time_range"] = format_time_range
 
     return env

@@ -1,8 +1,8 @@
-from datetime import datetime
-
 from django.shortcuts import render
 
-from .models import Clinic, Provider, Setting
+from manage_breast_screening.clinics.presenters import ClinicsPresenter
+
+from .models import Clinic
 
 STATUS_COLORS = {
     Clinic.State.SCHEDULED: "blue",  # default blue
@@ -12,28 +12,12 @@ STATUS_COLORS = {
 
 
 def clinic_list(request, filter="today"):
-    match filter:
-        case "today":
-            clinics = Clinic.objects.today()
-        case "upcoming":
-            clinics = Clinic.objects.upcoming()
-        case "completed":
-            clinics = Clinic.objects.completed()
-        case _:
-            clinics = Clinic.objects.all()
+    clinics = Clinic.objects.prefetch_related("setting").by_filter(filter)
+    counts_by_filter = Clinic.filter_counts()
+    presenter = ClinicsPresenter(clinics, filter, counts_by_filter)
 
     return render(
         request,
         "clinics/index.html",
-        context={
-            "filter": filter,
-            "filteredClinics": clinics,
-            "filteredClinicCounts": {
-                "all": Clinic.objects.count(),
-                "today": Clinic.objects.today().count(),
-                "upcoming": Clinic.objects.upcoming().count(),
-                "completed": Clinic.objects.completed().count(),
-            },
-            "STATUS_COLORS": STATUS_COLORS,
-        },
+        context={"presenter": presenter},
     )

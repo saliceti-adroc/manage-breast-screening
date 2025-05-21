@@ -4,46 +4,9 @@ from django.urls import reverse
 
 from ..clinics.models import Appointment
 from ..utils.date_formatting import format_date, format_relative_date, format_time
+from ..utils.string_formatting import format_age, format_nhs_number, sentence_case
 
 Status = Appointment.Status
-
-
-def sentence_case(value):
-    """
-    Capitalise the first letter of a sentence.
-
-    >>> sentence_case('a quick brown fox jumps over the lazy dog')
-    'A quick brown fox jumps over the lazy dog'
-
-    Unlike the built in `capitalize` filter, this will preserve
-    capital letters already in the string:
-
-    >>> sentence_case('not in PACS')
-    'Not in PACS'
-    """
-    if not value:
-        return ""
-
-    return value[0].upper() + value[1:]
-
-
-def format_nhs_number(value):
-    """
-    Format an NHS number with spaces
-
-    >>> format_nhs_number('9998887777')
-    '999 888 7777'
-    """
-    if not value:
-        return ""
-
-    digits = re.sub(r"\s", "", value)
-
-    return f"{digits[:3]} {digits[3:6]} {digits[6:]}"
-
-
-def format_age(value: int) -> str:
-    return f"{value} years old"
 
 
 def status_colour(status):
