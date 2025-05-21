@@ -66,9 +66,9 @@ class StartScreening(BaseAppointmentForm):
 
         context.update(
             {
-                "appointment": presenter,
-                "caption": presenter.clinic_slot.clinic_type + " appointment",
                 "title": presenter.participant.full_name,
+                "caption": presenter.clinic_slot.clinic_type + " appointment",
+                "appointment": presenter,
                 "decision_legend": "Can the appointment go ahead?",
                 "decision_hint": "Before you proceed, check the participant’s identity and confirm that their last mammogram was more than 6 months ago.",
             }
@@ -101,6 +101,16 @@ class AskForMedicalInformation(BaseAppointmentForm):
     template_name = "record_a_mammogram/ask_for_medical_information.jinja"
     form_class = AskForMedicalInformationForm
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update(
+            {
+                "title": "Medical information",
+                "decision_legend": "Has the participant shared any relevant medical information?",
+            }
+        )
+        return context
+
     def form_valid(self, form):
         form.save()
 
@@ -118,6 +128,16 @@ class RecordMedicalInformation(BaseAppointmentForm):
     template_name = "record_a_mammogram/record_medical_information.jinja"
     form_class = RecordMedicalInformationForm
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update(
+            {
+                "title": "Record medical information",
+                "decision_legend": "Can imaging go ahead?",
+            }
+        )
+        return context
+
     def form_valid(self, form):
         form.save()
 
@@ -134,6 +154,7 @@ class RecordMedicalInformation(BaseAppointmentForm):
 def appointment_cannot_go_ahead(request, id):
     appointment = get_object_or_404(Appointment, pk=id)
     participant = appointment.screening_episode.participant
+
     if request.method == "POST":
         form = AppointmentCannotGoAheadForm(request.POST, instance=appointment)
         if form.is_valid():
@@ -145,12 +166,20 @@ def appointment_cannot_go_ahead(request, id):
     return render(
         request,
         "record_a_mammogram/appointment_cannot_go_ahead.jinja",
-        {"form": form, "participant": participant},
+        {
+            "title": "Appointment cannot go ahead",
+            "caption": participant.full_name,
+            "form": form,
+        },
     )
 
 
 def awaiting_images(request, id):
-    return render(request, "record_a_mammogram/awaiting_images.jinja", {})
+    return render(
+        request,
+        "record_a_mammogram/awaiting_images.jinja",
+        {"title": "Awaiting images"},
+    )
 
 
 @require_http_methods(["POST"])
