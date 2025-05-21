@@ -66,7 +66,7 @@
               "errorMessage": errorMessage,
               "hint": {
                 "html": decision_hint|e
-              },
+              } if decision_hint,
               "items": [
                 {
                   "value": form.decision.field.choices[0][0],
@@ -90,8 +90,12 @@
         </div>
     </div>
   </form>
+  {% endif %}
 
+  {% if cannot_continue_link %}
+    <p><a class="nhsuk-link nhsuk-link--no-visited-state" href="{{ cannot_continue_link.href }}">{{ cannot_continue_link.text }}</a></p>
   {% endif %}
   </div>
+
 </div>
 {% endblock pageContent %}
