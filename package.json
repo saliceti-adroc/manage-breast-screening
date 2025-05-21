@@ -5,11 +5,12 @@
   "engines": {
     "node": "^20.9.0 || ^22.11.0"
   },
+  "type": "module",
   "scripts": {
     "compile": "concurrently \"npm run compile:js\" \"npm run compile:css\"",
     "watch": "concurrently \"npm run compile:js:watch\" \"npm run compile:css:watch\"",
-    "compile:js": "rollup -c rollup.config.mjs --sourcemap",
-    "compile:js:watch": "rollup -c rollup.config.mjs --sourcemap --watch",
+    "compile:js": "rollup -c rollup.config.js --sourcemap",
+    "compile:js:watch": "rollup -c rollup.config.js --sourcemap --watch",
     "compile:css": "sass --quiet-deps --silence-deprecation=import --load-path=. --load-path=node_modules manage_breast_screening/assets/sass:manage_breast_screening/assets/compiled/css",
     "compile:css:watch": "sass --quiet-deps --silence-deprecation=import --load-path=. --load-path=node_modules manage_breast_screening/assets/sass:manage_breast_screening/assets/compiled/css --watch"
   },
