@@ -28,9 +28,8 @@ class AjaxSubmit {
     }
 
     this.$form.addEventListener('submit', (event) => {
-      event.preventDefault()
       this.submitForm()
-      return false
+      event.preventDefault()
     })
   }
 
