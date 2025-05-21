@@ -35,6 +35,8 @@ describe('AJAX submit', () => {
     button = getByRole(form, 'button', { name: 'Submit' })
     oldMessage = $container.querySelector('[data-hide-on-submit]')
     message = $container.querySelector('[data-show-on-submit]')
+
+    jest.spyOn(console, 'error').mockImplementation(() => {})
   })
 
   it('swaps the form for a success message', async () => {
@@ -46,10 +48,13 @@ describe('AJAX submit', () => {
     expect(form).toHaveAttribute('hidden')
     expect(oldMessage).toHaveAttribute('hidden')
     expect(message).not.toHaveAttribute('hidden')
+    expect(console.error).not.toHaveBeenCalled()
   })
 
   it('refreshes the page if the request fails', async () => {
-    mockFetch({ ok: false, status: 500 })
+    const response = { ok: false, status: 500 }
+
+    mockFetch(response)
     init()
 
     await user.click(button)
@@ -57,10 +62,16 @@ describe('AJAX submit', () => {
     expect(location.reload).toHaveBeenCalled()
     expect(message).toHaveAttribute('hidden')
     expect(oldMessage).not.toHaveAttribute('hidden')
+
+    expect(console.error).toHaveBeenCalledWith(
+      new Error(`Response status: ${response.status}`)
+    )
   })
 
   it('refreshes the page if there is an error, such as a timeout', async () => {
-    mockFetchRejected(new Error('something went wrong'))
+    const error = new Error('Something went wrong')
+
+    mockFetchRejected(error)
     init()
 
     await user.click(button)
@@ -68,5 +79,7 @@ describe('AJAX submit', () => {
     expect(location.reload).toHaveBeenCalled()
     expect(message).toHaveAttribute('hidden')
     expect(oldMessage).not.toHaveAttribute('hidden')
+
+    expect(console.error).toHaveBeenCalledWith(error)
   })
 })
