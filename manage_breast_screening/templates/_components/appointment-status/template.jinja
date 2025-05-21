@@ -9,7 +9,7 @@
   })}}
 
   {% if appointment.status.is_confirmed %}
-    <form action="{{ url('record_a_mammogram:check_in', kwargs={'id': appointment.id}) }}" <form method="post" novalidate>
+    <form action="{{ url('record_a_mammogram:check_in', kwargs={'id': appointment.id}) }}" method="post" novalidate>
     <p class="nhsuk-u-margin-top-2 nhsuk-u-margin-bottom-0">
       <button class="app-button--link">
         Check in
