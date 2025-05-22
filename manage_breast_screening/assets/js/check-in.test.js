@@ -40,7 +40,13 @@ describe('Check in', () => {
   })
 
   it('swaps the form for a success message', async () => {
-    mockFetch({ ok: true, status: 200 })
+    jest.mocked(fetch).mockResolvedValue(
+      /** @type {Response} */ ({
+        ok: true,
+        status: 200
+      })
+    )
+
     initCheckIn()
 
     await user.click(button)
@@ -52,9 +58,13 @@ describe('Check in', () => {
   })
 
   it('does not change the DOM if the request fails', async () => {
-    const response = { ok: false, status: 500 }
+    jest.mocked(fetch).mockResolvedValue(
+      /** @type {Response} */ ({
+        ok: false,
+        status: 500
+      })
+    )
 
-    mockFetch(response)
     initCheckIn()
 
     await user.click(button)
@@ -63,7 +73,7 @@ describe('Check in', () => {
     expect(oldMessage).not.toHaveAttribute('hidden')
 
     expect(console.error).toHaveBeenCalledWith(
-      new Error(`Response status: ${response.status}`)
+      new Error('Response status: 500')
     )
   })
 })

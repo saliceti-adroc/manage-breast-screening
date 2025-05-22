@@ -48,7 +48,12 @@ describe('setSubmit', () => {
   })
 
   it('calls onBeforeSubmit and onSuccess when the request succeeds', async () => {
-    mockFetch({ ok: true, status: 200 })
+    jest.mocked(fetch).mockResolvedValue(
+      /** @type {Response} */ ({
+        ok: true,
+        status: 200
+      })
+    )
 
     await user.click(button)
 
@@ -58,9 +63,12 @@ describe('setSubmit', () => {
   })
 
   it('calls onBeforeSubmit and onError when the request fails', async () => {
-    const response = { ok: false, status: 500 }
-
-    mockFetch(response)
+    jest.mocked(fetch).mockResolvedValue(
+      /** @type {Response} */ ({
+        ok: false,
+        status: 500
+      })
+    )
 
     await user.click(button)
 
@@ -72,7 +80,7 @@ describe('setSubmit', () => {
   it('calls onBeforeSubmit and onError when an error is thrown', async () => {
     const thrownError = new Error('Something went wrong')
 
-    mockFetchRejected(thrownError)
+    jest.mocked(fetch).mockRejectedValue(thrownError)
 
     await user.click(button)
 
