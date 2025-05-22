@@ -20,6 +20,7 @@ __pycache__
 staticfiles/
 
 # npm
+*.tsbuildinfo
 node_modules/
 manage_breast_screening/assets/compiled
 

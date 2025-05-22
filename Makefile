@@ -47,7 +47,7 @@ test-unit: # Run unit tests @Testing
 	npm test
 
 test-lint: # Lint files @Testing
-	# TODO
+	npm run lint
 
 test-ui: # Run UI tests @Testing
 	poetry run pytest -m system
