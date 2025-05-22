@@ -2,7 +2,7 @@
 
 {% set show_check_in = appointment.status.is_confirmed %}
 
-<div data-event-status-container="{{ appointment.id }}" {% if show_check_in %}data-module="app-ajax-submit"{% endif %}>
+<div data-event-status-container="{{ appointment.id }}" {% if show_check_in %}data-module="app-check-in"{% endif %}>
   <span data-hide-on-submit>{{ tag({
     "text": appointment.status.text,
     "classes": appointment.status.classes
