@@ -1,18 +1,26 @@
 import setSubmit from './set-submit.js'
 
-/*
-Enhance an HTML form to intercept submit events and instead fetch the form action URL.
-If successful, show child elements with data-show-on-submit, and hide those with data-hide-on-submit.
-If unsuccessful, or the fetch times out, force a page refresh.
-*/
+/**
+ * Enhance an HTML form to intercept submit events and instead fetch the form action URL.
+ * If successful, show child elements with data-show-on-submit, and hide those with data-hide-on-submit.
+ * If unsuccessful, or the fetch times out, force a page refresh.
+ */
 class CheckIn {
+  /**
+   * @param {Element | null} [$root] - HTML element to use for component
+   */
   constructor($root) {
-    if (!$root) {
-      throw Error('CheckIn initialised without a root element')
+    if (!$root || !($root instanceof HTMLElement)) {
+      throw new Error('CheckIn initialised without a root element')
+    }
+
+    const $form = $root.querySelector('form')
+    if (!$form) {
+      throw new Error('CheckIn initialised without a form element')
     }
 
     this.$root = $root
-    this.$form = $root.querySelector('form')
+    this.$form = $form
     this.$showOnSubmit = $root.querySelectorAll('[data-show-on-submit]')
     this.$hideOnSubmit = $root.querySelectorAll('[data-hide-on-submit]')
 

@@ -18,6 +18,7 @@ describe('setSubmit', () => {
   /** @type {Response} */
   let successResponse
 
+  /** @type {Error} */
   let error
 
   beforeEach(() => {
@@ -58,7 +59,7 @@ describe('setSubmit', () => {
     await user.click(button)
 
     expect(beforeSubmit).toBe(true)
-    expect(successResponse.status).toEqual(200)
+    expect(successResponse).toHaveProperty('status', 200)
     expect(error).toBeUndefined()
   })
 

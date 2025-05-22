@@ -31,5 +31,5 @@ export default {
 }
 
 /**
- * @import { Config, ProjectConfig } from 'jest'
+ * @import { Config } from 'jest'
  */
