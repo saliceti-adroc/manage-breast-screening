@@ -38,8 +38,17 @@ class CheckIn {
   }
 }
 
-export const init = ($scope = document) => {
-  const $elements = $scope.querySelectorAll(`[data-module="app-check-in"]`)
+/**
+ * Initialise check in component
+ *
+ * @param {object} [options]
+ * @param {Element | Document | null} [options.scope] - Scope of the document to search within
+ */
+export function initCheckIn(options = {}) {
+  const $scope = options.scope || document
+  const $elements = $scope.querySelectorAll('[data-module="app-check-in"]')
 
-  return Array.from($elements).map(($element) => new CheckIn($element))
+  $elements.forEach(($root) => {
+    new CheckIn($root)
+  })
 }

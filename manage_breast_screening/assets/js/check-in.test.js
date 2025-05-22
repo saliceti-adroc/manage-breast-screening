@@ -1,7 +1,7 @@
 import { getByRole } from '@testing-library/dom'
 import { userEvent } from '@testing-library/user-event'
 
-import { init } from './check-in.js'
+import { initCheckIn } from './check-in.js'
 
 describe('Check in', () => {
   const user = userEvent.setup()
@@ -41,7 +41,7 @@ describe('Check in', () => {
 
   it('swaps the form for a success message', async () => {
     mockFetch({ ok: true, status: 200 })
-    init()
+    initCheckIn()
 
     await user.click(button)
 
@@ -55,7 +55,7 @@ describe('Check in', () => {
     const response = { ok: false, status: 500 }
 
     mockFetch(response)
-    init()
+    initCheckIn()
 
     await user.click(button)
 
