@@ -1,34 +1,50 @@
 /**
+ * Jest project config defaults
+ *
+ * @type {ProjectConfig}
+ */
+const config = {
+  cacheDirectory: '<rootDir>/.cache/jest',
+  coveragePathIgnorePatterns: ['.eslintrc.js', '.test.(cjs|js)'],
+
+  // Enable Babel transforms until Jest supports ESM and `import()`
+  // See: https://jestjs.io/docs/ecmascript-modules
+  transform: {
+    '^.+\\.(cjs|js)$': ['babel-jest', { rootMode: 'upward' }]
+  }
+}
+
+/**
  * Jest config
  *
  * @type {Config}
  */
 export default {
-  collectCoverageFrom: ['**/assets/js/**/*.{js,mjs}'],
+  collectCoverageFrom: ['**/assets/js/**/*.{cjs,js}'],
   coverageProvider: 'v8',
-  // testMatch: ['<rootDir>/**/*.unit.test.{js,mjs}'],
+  projects: [
+    {
+      ...config,
+      displayName: 'JavaScript behaviour tests',
+      setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
+      testEnvironment: 'jsdom',
+      testMatch: ['<rootDir>/**/*.test.{cjs,js}']
+    }
+  ],
 
-  // Enable GitHub Actions reporter UI
-  reporters: ['default', 'github-actions'],
-
-  cacheDirectory: '<rootDir>/.cache/jest',
-  coveragePathIgnorePatterns: ['.eslintrc.js', '.test.(js|mjs)'],
-
-  // Enable Babel transforms until Jest supports ESM and `import()`
-  // See: https://jestjs.io/docs/ecmascript-modules
-  transform: {
-    '^.+\\.(js|cjs)$': ['babel-jest', { rootMode: 'upward' }]
-  },
-
-  testEnvironment: 'jsdom',
-
-  setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
-
+  // Reset mocks between tests
   resetMocks: true,
   resetModules: true,
   restoreMocks: true,
-  clearMocks: true
+  clearMocks: true,
+
+  // Enable GitHub Actions reporter UI
+  reporters: ['default', 'github-actions']
 }
+
+/**
+ * @typedef {Exclude<Config['projects'][0], string>} ProjectConfig
+ */
 
 /**
  * @import { Config } from 'jest'
