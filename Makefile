@@ -44,9 +44,10 @@ test: test-unit test-ui test-lint # Run all tests @Testing
 
 test-unit: # Run unit tests @Testing
 	poetry run pytest -m 'not system'
+	npm test -- --coverage
 
 test-lint: # Lint files @Testing
-	# TODO
+	npm run lint
 
 test-ui: # Run UI tests @Testing
 	poetry run pytest -m system

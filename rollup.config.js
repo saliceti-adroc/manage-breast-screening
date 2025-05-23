@@ -1,10 +1,15 @@
 import commonjs from '@rollup/plugin-commonjs'
 import { nodeResolve } from '@rollup/plugin-node-resolve'
 import terser from '@rollup/plugin-terser'
-import { babel } from '@rollup/plugin-babel';
+import { babel } from '@rollup/plugin-babel'
 
+/**
+ * Rollup config
+ *
+ * @type {RollupOptions}
+ */
 export default {
-  input: 'manage_breast_screening/assets/js/index.mjs',
+  input: 'manage_breast_screening/assets/js/index.js',
 
   output: {
     compact: true,
@@ -40,3 +45,7 @@ export default {
     babel({ babelHelpers: 'bundled' }) // must come after commonjs
   ]
 }
+
+/**
+ * @import { RollupOptions } from 'rollup'
+ */

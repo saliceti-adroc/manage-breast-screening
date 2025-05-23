@@ -1,7 +1,7 @@
 /**
  * @type {ESLint.ConfigData}
  */
-module.exports = {
+export default {
   overrides: [
     {
       files: ['**/*.{cjs,js,mjs}'],
@@ -12,7 +12,7 @@ module.exports = {
       },
       parserOptions: {
         // Note: Allow ES2015 for import/export syntax
-        ecmaVersion: '2015'
+        ecmaVersion: 2015
       },
       plugins: ['es-x'],
       rules: {
