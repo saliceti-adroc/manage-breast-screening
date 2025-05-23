@@ -3,7 +3,7 @@ import { userEvent } from '@testing-library/user-event'
 
 import setSubmit from './set-submit.js'
 
-describe('setSubmit', () => {
+describe('Set submit events', () => {
   const user = userEvent.setup()
 
   /** @type {HTMLButtonElement} */
