@@ -58,6 +58,8 @@ run: manage_breast_screening/config/.env # Start the development server @Develop
 db: manage_breast_screening/config/.env # Start the development database @Development
 	docker compose --env-file manage_breast_screening/config/.env up -d --wait
 
+dev: db run
+
 rebuild-db: _clean-docker db migrate seed  # Create a fresh development database @Development
 
 migrate:  # Run migrations
@@ -65,6 +67,9 @@ migrate:  # Run migrations
 
 seed:  # Load seed data
 	poetry run ./manage.py loaddata clinics participants
+
+models:
+	poetry run ./manage.py shell -c "from django.apps import apps; print('\n'.join(f'{m._meta.app_label}.{m.__name__}' for m in apps.get_models()))"
 
 _install-poetry:
 	if ! command -v poetry >/dev/null 2>&1; then \
