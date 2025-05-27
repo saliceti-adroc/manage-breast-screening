@@ -1,1 +1,43 @@
 {% extends "wizard_step.jinja" %}
+{% from "card/macro.jinja" import card %}
+{% from "inset-text/macro.jinja" import insetText %}
+
+{% block stepContent %}
+
+{% set symptoms_card_html %}
+
+{% endset %}
+{{ card({
+  "heading": "Recent breast changes or symptoms",
+  "headingLevel": "2",
+  "descriptionHtml": symptoms_card_html
+}) }}
+
+{% set medical_history_card_html %}
+
+{% endset %}
+{{ card({
+  "heading": "Medical history",
+  "headingLevel": "2",
+  "descriptionHtml": medical_history_card_html
+}) }}
+
+{% set breast_features_card_html %}
+
+{% endset %}
+{{ card({
+  "heading": "Breast features",
+  "headingLevel": "2",
+  "descriptionHtml": breast_features_card_html
+}) }}
+
+{% set other_information_card_html %}
+
+{% endset %}
+{{ card({
+  "heading": "Other information",
+  "headingLevel": "2",
+  "descriptionHtml": other_information_card_html
+}) }}
+
+{% endblock %}
