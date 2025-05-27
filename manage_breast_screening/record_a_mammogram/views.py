@@ -156,9 +156,13 @@ class RecordMedicalInformation(BaseAppointmentForm):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        id = self.kwargs["id"]
+        participant = Participant.objects.get(screeningepisode__appointment__id=id)
         context.update(
             {
                 "title": "Record medical information",
+                "participant": participant,
+                "caption": participant.full_name,
                 "decision_legend": "Can imaging go ahead?",
             }
         )
