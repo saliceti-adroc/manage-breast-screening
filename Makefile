@@ -71,6 +71,9 @@ seed:  # Load seed data
 models:
 	poetry run ./manage.py shell -c "from django.apps import apps; print('\n'.join(f'{m._meta.app_label}.{m.__name__}' for m in apps.get_models()))"
 
+shell:
+	poetry run ./manage.py shell
+
 _install-poetry:
 	if ! command -v poetry >/dev/null 2>&1; then \
 		pip install poetry; \
@@ -86,5 +89,5 @@ manage_breast_screening/config/.env:
 
 
 .DEFAULT_GOAL := help
-.PHONY: clean config dependencies build deploy githooks-config githooks-run help test test-unit test-lint test-ui run _install-poetry _clean-docker rebuild-db db migrate seed
+.PHONY: clean config dependencies build deploy githooks-config githooks-run help test test-unit test-lint test-ui run _install-poetry _clean-docker rebuild-db db migrate seed shell
 .SILENT: help run
