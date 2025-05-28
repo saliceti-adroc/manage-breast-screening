@@ -1,7 +1,7 @@
 [
   {
     "model": "clinics.provider",
-    "pk": 1,
+    "pk": "5d832870-c741-41f7-ae63-c970151a4e3a",
     "fields": {
       "created_at": "2025-04-04T09:19:24.083Z",
       "updated_at": "2025-04-04T09:19:24.083Z",
@@ -10,21 +10,21 @@
   },
   {
     "model": "clinics.setting",
-    "pk": 1,
+    "pk": "4665ee3d-21b3-414f-a689-3e58f416d68c",
     "fields": {
       "created_at": "2025-04-04T09:19:54.619Z",
       "updated_at": "2025-04-04T09:19:54.619Z",
       "name": "West Sussex BSS",
-      "provider": 1
+      "provider": "5d832870-c741-41f7-ae63-c970151a4e3a"
     }
   },
   {
     "model": "clinics.clinic",
-    "pk": 1,
+    "pk": "ce662c8b-92dc-4c82-9d5d-1ddcb201e2b6",
     "fields": {
       "created_at": "2025-04-04T09:20:35.518Z",
       "updated_at": "2025-04-04T09:20:35.518Z",
-      "setting": 1,
+      "setting": "4665ee3d-21b3-414f-a689-3e58f416d68c",
       "starts_at": "2025-04-01T09:00:00Z",
       "ends_at": "2025-04-04T17:00:00Z",
       "type": "SCREENING",
@@ -34,165 +34,165 @@
   },
   {
     "model": "clinics.clinicslot",
-    "pk": 1,
+    "pk": "d1df208b-955a-4b2f-a908-2728aea6b29f",
     "fields": {
       "created_at": "2025-04-04T09:20:35.518Z",
       "updated_at": "2025-04-04T09:20:35.518Z",
-      "clinic": 1,
+      "clinic": "ce662c8b-92dc-4c82-9d5d-1ddcb201e2b6",
       "starts_at": "2025-05-01T09:00:00Z",
       "duration_in_minutes": 30
     }
   },
   {
     "model": "clinics.clinicslot",
-    "pk": 2,
+    "pk": "cc428100-3397-4263-b863-cee4326212b7",
     "fields": {
       "created_at": "2025-04-04T09:20:35.518Z",
       "updated_at": "2025-04-04T09:20:35.518Z",
-      "clinic": 1,
+      "clinic": "ce662c8b-92dc-4c82-9d5d-1ddcb201e2b6",
       "starts_at": "2025-05-01T10:00:00Z",
       "duration_in_minutes": 30
     }
   },
   {
     "model": "clinics.clinicslot",
-    "pk": 3,
+    "pk": "f657f049-a52f-4a23-ada4-834ea557336c",
     "fields": {
       "created_at": "2025-04-04T09:20:35.518Z",
       "updated_at": "2025-04-04T09:20:35.518Z",
-      "clinic": 1,
+      "clinic": "ce662c8b-92dc-4c82-9d5d-1ddcb201e2b6",
       "starts_at": "2025-05-01T11:00:00Z",
       "duration_in_minutes": 30
     }
   },
   {
     "model": "clinics.clinicslot",
-    "pk": 4,
+    "pk": "48bc626c-e8b1-44e7-a747-915c65fc2360",
     "fields": {
       "created_at": "2025-04-04T09:20:35.518Z",
       "updated_at": "2025-04-04T09:20:35.518Z",
-      "clinic": 1,
+      "clinic": "ce662c8b-92dc-4c82-9d5d-1ddcb201e2b6",
       "starts_at": "2025-05-01T12:00:00Z",
       "duration_in_minutes": 30
     }
   },
   {
     "model": "clinics.clinicslot",
-    "pk": 5,
+    "pk": "1c0009ed-8cee-422b-965d-4934b77c5294",
     "fields": {
       "created_at": "2025-04-04T09:20:35.518Z",
       "updated_at": "2025-04-04T09:20:35.518Z",
-      "clinic": 1,
+      "clinic": "ce662c8b-92dc-4c82-9d5d-1ddcb201e2b6",
       "starts_at": "2025-05-01T13:00:00Z",
       "duration_in_minutes": 30
     }
   },
   {
     "model": "clinics.screeningepisode",
-    "pk": 1,
+    "pk": "1c0009ed-8cee-422b-965d-4934b77c5294",
     "fields": {
       "created_at": "2022-04-25T11:15:00Z",
       "updated_at": "2025-04-25T11:15:00Z",
-      "participant": 1
+      "participant": "913bb98a-c31f-4c2b-9b81-73a8eb994c20"
     }
   },
   {
     "model": "clinics.screeningepisode",
-    "pk": 2,
+    "pk": "3888ca4a-2b6c-43a3-bde2-4a92649c6648",
     "fields": {
       "created_at": "2025-04-25T11:15:00Z",
       "updated_at": "2025-04-25T11:15:00Z",
-      "participant": 2
+      "participant": "6ffdc8dd-8f78-4fda-82a1-890f20eda7fd"
     }
   },
   {
     "model": "clinics.screeningepisode",
-    "pk": 3,
+    "pk": "64cf6722-19f2-4519-89a3-cb127447c72a",
     "fields": {
       "created_at": "2025-04-25T11:15:00Z",
       "updated_at": "2025-04-25T11:15:00Z",
-      "participant": 3
+      "participant": "7c9d087a-63ce-4459-a3bf-8379837eb35d"
     }
   },
   {
     "model": "clinics.screeningepisode",
-    "pk": 4,
+    "pk": "519593ee-6e44-41db-962a-862a09f807ad",
     "fields": {
       "created_at": "2025-04-25T11:15:00Z",
       "updated_at": "2025-04-25T11:15:00Z",
-      "participant": 4
+      "participant": "6f947d99-3f1f-42f4-b21c-ad7987c05d6d"
     }
   },
   {
     "model": "clinics.screeningepisode",
-    "pk": 5,
+    "pk": "522fe2cb-1c41-40d5-a65d-c36695bf11b5",
     "fields": {
       "created_at": "2025-04-25T11:15:00Z",
       "updated_at": "2025-04-25T11:15:00Z",
-      "participant": 5
+      "participant": "2b87d44f-637b-44a7-9dfd-1e57f37d04ea"
     }
   },
   {
     "model": "clinics.screeningepisode",
-    "pk": 6,
+    "pk": "ccad34c1-8e26-4c9e-a134-a0de8f997d89",
     "fields": {
       "created_at": "2025-04-25T11:15:00Z",
       "updated_at": "2025-04-25T11:15:00Z",
-      "participant": 1
+      "participant": "913bb98a-c31f-4c2b-9b81-73a8eb994c20"
     }
   },
   {
     "model": "clinics.appointment",
-    "pk": 1,
+    "pk": "e7be35a3-8b7f-4522-9e9b-7b8e6829c1b8",
     "fields": {
       "created_at": "2025-04-25T11:20:00Z",
       "updated_at": "2025-04-25T11:20:00Z",
       "screening_episode": 6,
-      "clinic_slot": 1,
+      "clinic_slot": "d1df208b-955a-4b2f-a908-2728aea6b29f",
       "status": "CONFIRMED"
     }
   },
   {
     "model": "clinics.appointment",
-    "pk": 2,
+    "pk": "522fe2cb-1c41-40d5-a65d-c36695bf11b5",
     "fields": {
       "created_at": "2025-04-25T11:20:00Z",
       "updated_at": "2025-04-25T11:20:00Z",
-      "screening_episode": 2,
-      "clinic_slot": 2,
+      "screening_episode": "1c0009ed-8cee-422b-965d-4934b77c5294",
+      "clinic_slot": "cc428100-3397-4263-b863-cee4326212b7",
       "status": "CHECKED_IN"
     }
   },
   {
     "model": "clinics.appointment",
-    "pk": 3,
+    "pk": "ccad34c1-8e26-4c9e-a134-a0de8f997d89",
     "fields": {
       "created_at": "2025-04-25T11:20:00Z",
       "updated_at": "2025-04-25T11:20:00Z",
-      "screening_episode": 3,
-      "clinic_slot": 3,
+      "screening_episode": "3888ca4a-2b6c-43a3-bde2-4a92649c6648",
+      "clinic_slot": "f657f049-a52f-4a23-ada4-834ea557336c",
       "status": "SCREENED"
     }
   },
   {
     "model": "clinics.appointment",
-    "pk": 4,
+    "pk": "a3ad3cb1-d67a-499c-805c-845455deb60f",
     "fields": {
       "created_at": "2025-04-25T11:20:00Z",
       "updated_at": "2025-04-25T11:20:00Z",
-      "screening_episode": 4,
-      "clinic_slot": 4,
+      "screening_episode": "64cf6722-19f2-4519-89a3-cb127447c72a",
+      "clinic_slot": "48bc626c-e8b1-44e7-a747-915c65fc2360",
       "status": "DID_NOT_ATTEND"
     }
   },
   {
     "model": "clinics.appointment",
-    "pk": 5,
+    "pk": "e7be35a3-8b7f-4522-9e9b-7b8e6829c1b8",
     "fields": {
       "created_at": "2025-04-25T11:20:00Z",
       "updated_at": "2025-04-25T11:20:00Z",
-      "screening_episode": 5,
-      "clinic_slot": 5,
+      "screening_episode": "519593ee-6e44-41db-962a-862a09f807ad",
+      "clinic_slot": "1c0009ed-8cee-422b-965d-4934b77c5294",
       "status": "CANCELLED"
     }
   }

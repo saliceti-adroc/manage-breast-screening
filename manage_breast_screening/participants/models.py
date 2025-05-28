@@ -1,3 +1,4 @@
+import uuid
 from datetime import date
 
 from django.contrib.postgres.fields import ArrayField
@@ -78,6 +79,7 @@ class Participant(BaseModel):
 
 
 class ParticipantAddress(models.Model):
+    id = models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True)
     participant = models.OneToOneField(
         Participant, on_delete=models.CASCADE, related_name="address"
     )
