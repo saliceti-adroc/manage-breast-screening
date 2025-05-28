@@ -157,7 +157,7 @@ class RecordMedicalInformation(BaseAppointmentForm):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         id = self.kwargs["id"]
-        participant = Participant.objects.get(screeningepisode__appointment__id=id)
+        participant = get_object_or_404(Participant, screeningepisode__appointment__id=id)
         context.update(
             {
                 "title": "Record medical information",
