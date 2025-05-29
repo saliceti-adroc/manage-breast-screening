@@ -2,7 +2,7 @@
 
 {% from 'tag/macro.jinja' import tag %}
 {% from '_components/count/macro.jinja' import appCount %}
-{% from '_components/secondary-navigation/macro.jinja' import appSecondaryNavigation %}
+{% from '_components/secondary-navigation/macro.jinja' import app_secondary_navigation %}
 
 {% block content %}
 <h1>{{ presenter.heading }}</h1>
@@ -24,7 +24,7 @@
 }] %}
 {% endfor %}
 
-{{ appSecondaryNavigation({
+{{ app_secondary_navigation({
   "visuallyHiddenTitle": "Secondary menu",
   "items": ns.secondaryNavItems
 }) }}

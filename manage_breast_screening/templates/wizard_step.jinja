@@ -5,13 +5,13 @@
 {% from 'back-link/macro.jinja' import backLink %}
 {% from 'error-summary/macro.jinja' import errorSummary %}
 
-{% block beforeContent %}
+{% block before_content %}
 {# Using javascript temporarily - this should be replaced with proper URLs #}
 {{ backLink({
   "href": "javascript:history.back()",
   "text": "Go back"
 }) }}
-{% endblock beforeContent %}
+{% endblock before_content %}
 
 {% block messages %}
     {% if form.errors %}
@@ -31,7 +31,7 @@
     {% endif %}
 {% endblock %}
 
-{% block pageContent %}
+{% block page_content %}
 <div class="nhsuk-grid-row">
   <div class="nhsuk-grid-column-full">
 
@@ -44,7 +44,7 @@
   </h1>
   {% endblock heading %}
 
-  {% block stepContent %}{% endblock %}
+  {% block step_content %}{% endblock %}
 
   {% if form %}
   <form action="{{request.path}}" method="POST">
@@ -54,7 +54,7 @@
 
           {% if form.decision %}
             {% if form.decision.errors %}
-              {% set errorMessage = {"text": form.decision.errors | first} %}
+              {% set error_message = {"text": form.decision.errors | first} %}
             {% endif %}
 
             {{ radios({
@@ -67,7 +67,7 @@
                   "isPageHeading": false
                 }
               },
-              "errorMessage": errorMessage,
+              "errorMessage": error_message,
               "hint": {
                 "html": decision_hint|e
               } if decision_hint,
@@ -103,4 +103,4 @@
   </div>
 
 </div>
-{% endblock pageContent %}
+{% endblock page_content %}
