@@ -2,16 +2,17 @@
 {% from "card/macro.jinja" import card %}
 {% from "inset-text/macro.jinja" import insetText %}
 {% from "summary-list/macro.jinja" import summaryList %}
-{% block stepContent %}
+
+{% block step_content %}
 
 {% set symptoms_card_html %}
     {% set has_symptoms = false %}
 
-    {% set insetHtml %}
+    {% set inset_html %}
     <p>No symptoms have been recorded for this participant.</p>
     {% endset %}
     {{ insetText({
-      "html": insetHtml,
+      "html": inset_html,
       "classes": "nhsuk-u-margin-top-3 nhsuk-u-margin-bottom-4"
     }) }}
 
