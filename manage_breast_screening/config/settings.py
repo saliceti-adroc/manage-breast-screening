@@ -168,6 +168,7 @@ STATICFILES_DIRS = [BASE_DIR / "static", BASE_DIR / "assets" / "compiled"]
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
+LOG_QUERIES = boolean_env("LOG_QUERIES")
 LOGGING = {
     "version": 1,  # the dictConfig format version
     "disable_existing_loggers": False,  # retain the default loggers
@@ -196,7 +197,7 @@ LOGGING = {
             "propagate": False,
         },
         "django.db.backends": {
-            "level": "DEBUG" if DEBUG else "INFO",
+            "level": "DEBUG" if LOG_QUERIES else "INFO",
             "handlers": ["console"],
             "propagate": False,
         },
