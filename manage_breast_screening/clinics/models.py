@@ -15,10 +15,16 @@ class BaseModel(models.Model):
 class Provider(BaseModel):
     name = models.TextField()
 
+    def __str__(self):
+        return f"Provider: {self.name}"
+
 
 class Setting(BaseModel):
     name = models.TextField()
     provider = models.ForeignKey(Provider, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"Setting: {self.name}"
 
 
 class ClinicFilter(StrEnum):
