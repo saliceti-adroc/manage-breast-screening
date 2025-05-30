@@ -1,8 +1,11 @@
 import os
 
 import pytest
+from axe_playwright_python.sync_playwright import Axe
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from playwright.sync_api import expect, sync_playwright
+
+axe = Axe()
 
 
 @pytest.mark.system
@@ -52,3 +55,10 @@ class SystemTestCase(StaticLiveServerTestCase):
             field = fieldset.get_by_label(field_label)
 
         expect(field).to_be_focused()
+
+    def then_the_accessibility_baseline_is_met(self):
+        """
+        Check there are no Axe violations
+        """
+        results = axe.run(self.page)
+        self.assertEqual(results.violations_count, 0, results.generate_report())
