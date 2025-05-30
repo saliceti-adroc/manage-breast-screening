@@ -13,7 +13,8 @@ from manage_breast_screening.utils.acessibility import (
 axe = Axe()
 
 AXE_VIOLATIONS_EXCLUDE_LIST = [
-    "region"  # 'Some page content is not contained by landmarks' https://github.com/alphagov/govuk-frontend/issues/1604
+    "region",  # 'Some page content is not contained by landmarks' https://github.com/alphagov/govuk-frontend/issues/1604
+    "aria-allowed-attr",  # 'Ensures ARIA attributes are allowed for an element's role'. This is flagging false positives due to running an outdated of version of Axe.
 ]
 AXE_TARGETS_EXCLUDE_LIST = []
 
