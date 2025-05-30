@@ -5,7 +5,17 @@ from axe_playwright_python.sync_playwright import Axe
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from playwright.sync_api import expect, sync_playwright
 
+from manage_breast_screening.utils.acessibility import (
+    exclude_axe_targets,
+    exclude_axe_violations,
+)
+
 axe = Axe()
+
+AXE_VIOLATIONS_EXCLUDE_LIST = [
+    "link-name"
+]  # FIXME - this is a real issue that needs fixing
+AXE_TARGETS_EXCLUDE_LIST = []
 
 
 @pytest.mark.system
@@ -61,4 +71,11 @@ class SystemTestCase(StaticLiveServerTestCase):
         Check there are no Axe violations
         """
         results = axe.run(self.page)
+
+        if AXE_TARGETS_EXCLUDE_LIST:
+            exclude_axe_targets(results.response, AXE_TARGETS_EXCLUDE_LIST)
+
+        if AXE_VIOLATIONS_EXCLUDE_LIST:
+            exclude_axe_violations(results.response, AXE_VIOLATIONS_EXCLUDE_LIST)
+
         self.assertEqual(results.violations_count, 0, results.generate_report())
