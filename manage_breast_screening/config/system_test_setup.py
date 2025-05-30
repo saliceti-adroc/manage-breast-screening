@@ -12,9 +12,7 @@ from manage_breast_screening.utils.acessibility import (
 
 axe = Axe()
 
-AXE_VIOLATIONS_EXCLUDE_LIST = [
-    "link-name"
-]  # FIXME - this is a real issue that needs fixing
+AXE_VIOLATIONS_EXCLUDE_LIST = []
 AXE_TARGETS_EXCLUDE_LIST = []
 
 
