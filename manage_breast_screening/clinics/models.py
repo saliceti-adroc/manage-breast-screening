@@ -1,3 +1,4 @@
+import uuid
 from datetime import date
 from enum import StrEnum
 
@@ -8,6 +9,7 @@ class BaseModel(models.Model):
     class Meta:
         abstract = True
 
+    id = models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -15,10 +17,16 @@ class BaseModel(models.Model):
 class Provider(BaseModel):
     name = models.TextField()
 
+    def __str__(self):
+        return f"Provider: {self.name}"
+
 
 class Setting(BaseModel):
     name = models.TextField()
     provider = models.ForeignKey(Provider, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"Setting: {self.name}"
 
 
 class ClinicFilter(StrEnum):
