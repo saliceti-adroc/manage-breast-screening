@@ -12,7 +12,9 @@ from manage_breast_screening.utils.acessibility import (
 
 axe = Axe()
 
-AXE_VIOLATIONS_EXCLUDE_LIST = []
+AXE_VIOLATIONS_EXCLUDE_LIST = [
+    "region"  # 'Some page content is not contained by landmarks' https://github.com/alphagov/govuk-frontend/issues/1604
+]
 AXE_TARGETS_EXCLUDE_LIST = []
 
 
