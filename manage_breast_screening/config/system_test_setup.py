@@ -1,22 +1,11 @@
 import os
 
 import pytest
-from axe_playwright_python.sync_playwright import Axe
+from django.conf import settings
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from playwright.sync_api import expect, sync_playwright
 
-from manage_breast_screening.utils.acessibility import (
-    exclude_axe_targets,
-    exclude_axe_violations,
-)
-
-axe = Axe()
-
-AXE_VIOLATIONS_EXCLUDE_LIST = [
-    "region",  # 'Some page content is not contained by landmarks' https://github.com/alphagov/govuk-frontend/issues/1604
-    "aria-allowed-attr",  # 'Ensures ARIA attributes are allowed for an element's role'. This is flagging false positives due to running an outdated of version of Axe.
-]
-AXE_TARGETS_EXCLUDE_LIST = []
+from manage_breast_screening.utils.acessibility import AxeAdapter
 
 
 @pytest.mark.system
@@ -37,6 +26,7 @@ class SystemTestCase(StaticLiveServerTestCase):
     def setUp(self):
         self.page = self.browser.new_page()
         self.page.set_default_timeout(5000)
+        self.axe = AxeAdapter(self.page)
 
     def tearDown(self):
         self.page.close()
@@ -71,12 +61,5 @@ class SystemTestCase(StaticLiveServerTestCase):
         """
         Check there are no Axe violations
         """
-        results = axe.run(self.page)
-
-        if AXE_TARGETS_EXCLUDE_LIST:
-            exclude_axe_targets(results.response, AXE_TARGETS_EXCLUDE_LIST)
-
-        if AXE_VIOLATIONS_EXCLUDE_LIST:
-            exclude_axe_violations(results.response, AXE_VIOLATIONS_EXCLUDE_LIST)
-
+        results = self.axe.run()
         self.assertEqual(results.violations_count, 0, results.generate_report())

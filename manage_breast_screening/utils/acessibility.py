@@ -1,25 +1,42 @@
-from typing import Sequence
+import json
+
+from axe_playwright_python.base import AxeResults
+from django.conf import settings
+from playwright.sync_api import Page
+
+AXE_VIOLATIONS_EXCLUDE_LIST = [
+    "region",  # 'Some page content is not contained by landmarks' https://github.com/alphagov/govuk-frontend/issues/1604
+]
 
 
-def exclude_axe_violations(axe_response: dict, exclude_ids: Sequence) -> None:
-    """
-    Modify an axe response to exclude specific violations.
-    """
-    axe_response["violations"] = [
-        violation
-        for violation in axe_response["violations"]
-        if violation["id"] not in exclude_ids
-    ]
+class AxeAdapter:
+    def __init__(
+        self,
+        page: Page,
+        script_path=settings.BASE_DIR.parent
+        / "node_modules"
+        / "axe-core"
+        / "axe.min.js",
+        options=None,
+    ):
+        self.script_path = script_path
+        self.options = options or {
+            "rules": {id: {"enabled": False} for id in AXE_VIOLATIONS_EXCLUDE_LIST}
+        }
+        self.page = page
+        self._install(page)
 
+    def _install(self, page: Page):
+        """
+        Add the axe script to a playwright Page.
+        The script will be re-executed any time the page or it's frames are navigated.
+        """
+        page.add_init_script(path=self.script_path)
 
-def exclude_axe_targets(axe_response: dict, exclude_targets: Sequence) -> None:
-    """
-    Modify an axe response to exclude specific targets
-    """
-    exclude_targets_set = set(exclude_targets)
-    for violation in axe_response["violations"]:
-        violation["nodes"] = [
-            node
-            for node in violation["nodes"]
-            if not set(node["target"]).issubset(exclude_targets_set)
-        ]
+    def run(self) -> AxeResults:
+        """
+        Run axe on the whole document
+        """
+        options = json.dumps(self.options)
+        response = self.page.evaluate(rf"axe.run({options})")
+        return AxeResults(response)
