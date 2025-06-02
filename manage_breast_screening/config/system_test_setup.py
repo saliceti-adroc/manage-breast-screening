@@ -1,8 +1,11 @@
 import os
 
 import pytest
+from django.conf import settings
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from playwright.sync_api import expect, sync_playwright
+
+from manage_breast_screening.utils.acessibility import AxeAdapter
 
 
 @pytest.mark.system
@@ -23,6 +26,7 @@ class SystemTestCase(StaticLiveServerTestCase):
     def setUp(self):
         self.page = self.browser.new_page()
         self.page.set_default_timeout(5000)
+        self.axe = AxeAdapter(self.page)
 
     def tearDown(self):
         self.page.close()
@@ -52,3 +56,10 @@ class SystemTestCase(StaticLiveServerTestCase):
             field = fieldset.get_by_label(field_label)
 
         expect(field).to_be_focused()
+
+    def then_the_accessibility_baseline_is_met(self):
+        """
+        Check there are no Axe violations
+        """
+        results = self.axe.run()
+        self.assertEqual(results.violations_count, 0, results.generate_report())
