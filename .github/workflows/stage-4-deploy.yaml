@@ -1,0 +1,29 @@
+name: "Build stage"
+
+on:
+  workflow_call:
+    inputs:
+      commit_sha:
+        description: Commit SHA of both pipeline and docker image tag
+        required: true
+        type: string
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    environment: review
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - uses: azure/login@v2
+      with:
+        client-id: ${{ secrets.AZURE_CLIENT_ID }}
+        tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+        subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+    - name: Call deployment pipeline
+      run: |
+        az pipelines run --commit-id ${{inputs.commit_sha}} --name Deployment2 --org https://dev.azure.com/nhse-dtos --project dtos-manage-breast-screening --parameters commit_sha=${{inputs.commit_sha}}
